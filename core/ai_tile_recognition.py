@@ -3,12 +3,20 @@
 from __future__ import annotations
 
 import json
+import re
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
+
+from ai_tile_mvp.project_scaffold import (
+    DEFAULT_REVIEW_DISPLAY_NAME,
+    DEFAULT_REVIEW_TASK_SLUG,
+    DEFAULT_REVIEW_THRESHOLD,
+    get_review_classifier_config,
+)
 
 
 @dataclass
@@ -30,6 +38,10 @@ class AITileMatchResult:
     relation: str = ""
     relation_display: str = ""
     relation_confidence: Optional[float] = None
+    review_label: str = ""
+    review_display: str = ""
+    review_confidence: Optional[float] = None
+    review_passed: Optional[bool] = None
 
     @property
     def center(self):
@@ -54,6 +66,8 @@ class AITileMatchResult:
             "resource_type_display",
             "relation",
             "relation_display",
+            "review_label",
+            "review_display",
         ):
             value = getattr(self, field_name, "")
             if value:
@@ -62,15 +76,18 @@ class AITileMatchResult:
             "level_confidence",
             "resource_type_confidence",
             "relation_confidence",
+            "review_confidence",
         ):
             value = getattr(self, field_name, None)
             if value is not None:
                 region[field_name] = float(value)
+        if self.review_passed is not None:
+            region["review_passed"] = bool(self.review_passed)
         return region
 
 
 @dataclass
-class _AttributeTaskRuntime:
+class _ClassifierTaskRuntime:
     task_slug: str
     display_name: str
     weights_path: Path
@@ -79,9 +96,22 @@ class _AttributeTaskRuntime:
 
 
 @dataclass
+class _AttributeTaskRuntime(_ClassifierTaskRuntime):
+    pass
+
+
+@dataclass
+class _ReviewTaskRuntime(_ClassifierTaskRuntime):
+    positive_classes: set[str] = field(default_factory=set)
+    negative_classes: set[str] = field(default_factory=set)
+    confidence_threshold: float = DEFAULT_REVIEW_THRESHOLD
+
+
+@dataclass
 class _AttributeBundle:
     project_name: str
     tasks: Dict[str, _AttributeTaskRuntime]
+    review_task: _ReviewTaskRuntime | None = None
 
 
 class AITileRecognition:
@@ -125,6 +155,18 @@ class AITileRecognition:
     def get_last_attribute_notice(self) -> str:
         return self._last_attribute_notice
 
+    def _append_attribute_notice(self, message: str) -> None:
+        text = str(message or "").strip()
+        if not text:
+            return
+        if not self._last_attribute_notice:
+            self._last_attribute_notice = text
+            return
+        parts = [part.strip() for part in self._last_attribute_notice.split("；") if part.strip()]
+        if text in parts:
+            return
+        self._last_attribute_notice = f"{self._last_attribute_notice}；{text}"
+
     def get_warmup_progress(self, model_paths: Optional[Sequence[str | Path]] = None) -> dict[str, int]:
         normalized: list[str] = []
         seen: set[str] = set()
@@ -158,9 +200,94 @@ class AITileRecognition:
         try:
             from ultralytics import YOLO
         except Exception as exc:  # pragma: no cover - 依赖缺失时由运行日志提示
-            self._last_attribute_notice = f"AI 地块属性分类依赖不可用: {exc}"
+            self._append_attribute_notice(f"AI 地块属性分类依赖不可用: {exc}")
             return None
         return YOLO
+
+    @staticmethod
+    def _normalize_class_token(value: object) -> str:
+        text = str(value or "").strip().lower()
+        if not text:
+            return ""
+        return re.sub(r"\W+", "_", text, flags=re.UNICODE).strip("_")
+
+    @classmethod
+    def _normalize_class_tokens(cls, values: Sequence[object]) -> set[str]:
+        normalized: set[str] = set()
+        for value in values:
+            token = cls._normalize_class_token(value)
+            if token:
+                normalized.add(token)
+        return normalized
+
+    @staticmethod
+    def _resolve_optional_project_path(project_root: Path, raw_path: object) -> Path | None:
+        path_text = str(raw_path or "").strip()
+        if not path_text:
+            return None
+        candidate = Path(path_text)
+        if not candidate.is_absolute():
+            candidate = project_root / candidate
+        return candidate.resolve()
+
+    def _build_review_task_runtime(
+        self,
+        project_root: Path,
+        project_meta: dict[str, Any],
+        train_attr_root: Path,
+    ) -> _ReviewTaskRuntime | None:
+        review_config = get_review_classifier_config(project_meta)
+        if review_config is None:
+            return None
+
+        task_slug = str(review_config.get("task_slug") or DEFAULT_REVIEW_TASK_SLUG).strip()
+        if not task_slug:
+            return None
+
+        weights_path = self._resolve_optional_project_path(project_root, review_config.get("weights"))
+        if weights_path is not None and not weights_path.exists():
+            self._append_attribute_notice(f"AI 候选框复检模型不存在: {weights_path}")
+            return None
+        if weights_path is None:
+            weights_path = self._find_attribute_weights(train_attr_root, task_slug)
+        if weights_path is None:
+            return None
+
+        raw_display_map = review_config.get("class_display_map") or {}
+        class_display_map = {
+            str(key).strip(): str(value).strip()
+            for key, value in raw_display_map.items()
+            if str(key).strip() and str(value).strip()
+        } if isinstance(raw_display_map, dict) else {}
+
+        positive_aliases = review_config.get("positive_aliases") or [review_config.get("positive_class_slug") or "positive"]
+        negative_aliases = review_config.get("negative_aliases") or [review_config.get("negative_class_slug") or "negative"]
+        positive_classes = self._normalize_class_tokens(positive_aliases)
+        negative_classes = self._normalize_class_tokens(negative_aliases)
+        if not positive_classes:
+            positive_classes = self._normalize_class_tokens([review_config.get("positive_class_slug") or "positive"])
+
+        try:
+            confidence_threshold = float(review_config.get("threshold", DEFAULT_REVIEW_THRESHOLD) or DEFAULT_REVIEW_THRESHOLD)
+        except (TypeError, ValueError):
+            confidence_threshold = DEFAULT_REVIEW_THRESHOLD
+
+        return _ReviewTaskRuntime(
+            task_slug=task_slug,
+            display_name=str(review_config.get("display_name") or DEFAULT_REVIEW_DISPLAY_NAME),
+            weights_path=weights_path,
+            class_display_map=class_display_map,
+            positive_classes=positive_classes,
+            negative_classes=negative_classes,
+            confidence_threshold=max(0.0, min(1.0, confidence_threshold)),
+        )
+
+    @staticmethod
+    def _iter_classifier_runtimes(bundle: _AttributeBundle) -> list[_ClassifierTaskRuntime]:
+        runtimes: list[_ClassifierTaskRuntime] = list(bundle.tasks.values())
+        if bundle.review_task is not None:
+            runtimes.append(bundle.review_task)
+        return runtimes
 
     def _resolve_model_path(self, model_path: Optional[str]) -> Path:
         if model_path:
@@ -238,7 +365,7 @@ class AITileRecognition:
             try:
                 project_meta = json.loads(project_meta_path.read_text(encoding="utf-8"))
             except Exception as exc:
-                self._last_attribute_notice = f"读取项目属性配置失败: {exc}"
+                self._append_attribute_notice(f"读取项目属性配置失败: {exc}")
                 self._attribute_bundle_cache[cache_key] = None
                 return None
 
@@ -265,14 +392,17 @@ class AITileRecognition:
                     class_display_map=class_display_map,
                 )
 
+            review_task = self._build_review_task_runtime(project_root, project_meta, train_attr_root)
+
             bundle = _AttributeBundle(
                 project_name=str(project_meta.get("project_name") or project_root.name),
                 tasks=tasks,
+                review_task=review_task,
             )
-            self._attribute_bundle_cache[cache_key] = bundle if tasks else None
+            self._attribute_bundle_cache[cache_key] = bundle if tasks or review_task is not None else None
             return self._attribute_bundle_cache[cache_key]
 
-    def _get_attribute_model(self, task_runtime: _AttributeTaskRuntime):
+    def _get_attribute_model(self, task_runtime: _ClassifierTaskRuntime):
         with self._cache_lock:
             if task_runtime.model is not None:
                 return task_runtime.model
@@ -284,7 +414,7 @@ class AITileRecognition:
             try:
                 task_runtime.model = classifier_class(str(task_runtime.weights_path))
             except Exception as exc:
-                self._last_attribute_notice = f"加载 {task_runtime.display_name} 属性模型失败: {exc}"
+                self._append_attribute_notice(f"加载 {task_runtime.display_name} 属性模型失败: {exc}")
                 task_runtime.model = None
             return task_runtime.model
 
@@ -307,9 +437,9 @@ class AITileRecognition:
             return False, False, f"AI 地块检测模型预热失败: {exc}"
 
         bundle = self._load_attribute_bundle(resolved_model)
-        if bundle is not None and bundle.tasks:
+        if bundle is not None:
             warmup_crop = np.zeros((224, 224, 3), dtype=np.uint8)
-            for task_runtime in bundle.tasks.values():
+            for task_runtime in self._iter_classifier_runtimes(bundle):
                 model = self._get_attribute_model(task_runtime)
                 if model is None:
                     continue
@@ -378,7 +508,7 @@ class AITileRecognition:
 
     def _predict_attribute_labels(
         self,
-        task_runtime: _AttributeTaskRuntime,
+        task_runtime: _ClassifierTaskRuntime,
         crops: Sequence[np.ndarray],
     ) -> List[Tuple[str, float]]:
         if not crops:
@@ -414,6 +544,84 @@ class AITileRecognition:
             class_names = getattr(result, "names", None) or getattr(model, "names", None) or {}
             predictions.append((self._resolve_class_name(class_names, class_index), confidence))
         return predictions
+
+    def _apply_review_prediction(
+        self,
+        match: AITileMatchResult,
+        task_runtime: _ReviewTaskRuntime,
+        predicted_slug: str,
+        confidence: float,
+    ) -> bool:
+        predicted_display = task_runtime.class_display_map.get(predicted_slug, predicted_slug)
+        match.review_label = predicted_slug
+        match.review_display = predicted_display
+        match.review_confidence = float(confidence)
+
+        normalized = self._normalize_class_token(predicted_slug)
+        if normalized in task_runtime.negative_classes:
+            match.review_passed = False
+            return False
+        if normalized in task_runtime.positive_classes:
+            passed = float(confidence) >= float(task_runtime.confidence_threshold)
+            match.review_passed = passed
+            return passed
+
+        match.review_passed = True
+        return True
+
+    def _filter_matches_with_review(
+        self,
+        image: np.ndarray,
+        matches: Sequence[AITileMatchResult],
+        resolved_model: Path,
+    ) -> List[AITileMatchResult]:
+        if not matches:
+            return list(matches)
+
+        bundle = self._load_attribute_bundle(resolved_model)
+        if bundle is None or bundle.review_task is None:
+            return list(matches)
+
+        review_task = bundle.review_task
+        reviewed = [match for match in matches]
+        crops: List[np.ndarray] = []
+        crop_indices: List[int] = []
+        for index, match in enumerate(reviewed):
+            crop = self._crop_match_image(image, match)
+            if crop is None:
+                continue
+            crops.append(crop)
+            crop_indices.append(index)
+
+        if not crops:
+            return reviewed
+
+        predictions = self._predict_attribute_labels(review_task, crops)
+        kept_indices: set[int] = set(range(len(reviewed)))
+        filtered_count = 0
+        reviewed_count = 0
+        for crop_position, (predicted_slug, confidence) in enumerate(predictions):
+            result_index = crop_indices[crop_position]
+            if not predicted_slug:
+                continue
+            reviewed_count += 1
+            passed = self._apply_review_prediction(
+                reviewed[result_index],
+                review_task,
+                predicted_slug,
+                confidence,
+            )
+            if not passed:
+                kept_indices.discard(result_index)
+                filtered_count += 1
+
+        if filtered_count > 0:
+            self._append_attribute_notice(
+                f"AI 候选框复检过滤 {filtered_count}/{len(reviewed)} 个候选框"
+            )
+        if reviewed_count == 0:
+            return reviewed
+        return [reviewed[index] for index in range(len(reviewed)) if index in kept_indices]
 
     @staticmethod
     def _apply_attribute_prediction(
@@ -536,6 +744,10 @@ class AITileRecognition:
                     model_path=str(resolved_model),
                 )
             )
+
+        results = self._filter_matches_with_review(image, results, resolved_model)
+        if not results and detections:
+            self._last_error = "AI 候选框复检已过滤全部候选框"
 
         results.sort(key=lambda item: item.confidence, reverse=True)
         return results

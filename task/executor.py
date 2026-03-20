@@ -2350,6 +2350,9 @@ class TaskExecutor:
             roi=recognition_roi,
             max_count=result_limit,
         )
+        initial_attribute_notice = self._ai_tile_recognition.get_last_attribute_notice().strip()
+        if initial_attribute_notice:
+            self._log(f"[AI地块] {initial_attribute_notice}")
         if not results:
             note = self._ai_tile_recognition.get_last_error() or "未检测到地块"
             self._set_last_recognition_metrics(
@@ -2383,6 +2386,14 @@ class TaskExecutor:
             selected_indices=[match_index - 1],
             enrich_all=bool(getattr(step, "has_multiple_matches", False)),
         )
+        post_enrich_notice = self._ai_tile_recognition.get_last_attribute_notice().strip()
+        if post_enrich_notice and post_enrich_notice != initial_attribute_notice:
+            if initial_attribute_notice and post_enrich_notice.startswith(f"{initial_attribute_notice}；"):
+                delta_notice = post_enrich_notice[len(initial_attribute_notice) + 1 :].strip()
+                if delta_notice:
+                    self._log(f"[AI地块] {delta_notice}")
+            else:
+                self._log(f"[AI地块] {post_enrich_notice}")
         chosen = results[match_index - 1]
         note = f"使用第 {match_index} 个检测结果" if match_index > 1 else ""
         self._set_last_recognition_metrics(
@@ -2397,6 +2408,13 @@ class TaskExecutor:
             f"[AI地块] 选择结果: 置信度={chosen.confidence:.3f}, "
             f"中心(相对)={self._format_client_relative_point(chosen.center[0], chosen.center[1], client_size=(img.shape[1], img.shape[0]))}"
         )
+        if chosen.review_label:
+            review_display = chosen.review_display or chosen.review_label
+            review_confidence = chosen.review_confidence
+            if review_confidence is None:
+                self._log(f"[AI地块] 复检结果: {review_display}")
+            else:
+                self._log(f"[AI地块] 复检结果: {review_display}({review_confidence:.3f})")
 
         attribute_parts = []
         for task_slug, display_name in (("level", "等级"), ("resource_type", "类型"), ("relation", "关系")):

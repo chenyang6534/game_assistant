@@ -5,6 +5,44 @@
   "detection_label": "sanzhan_plot_node",
   "detection_run_name": "sanzhan_plot_det_yolov8n",
   "attribute_spec_text": "等级: 4级, 5级, 6级, 7级, 8级, 9级, 10级\n类型: 木材, 石头, 铁矿, 铜矿, 粮食\n关系: 同盟, 友盟, 中立, 敌对, 我方",
+  "review_classifier": {
+    "task_slug": "candidate_review",
+    "display_name": "候选框复检",
+    "weights": "",
+    "threshold": 0.75,
+    "positive_class": {
+      "display_name": "正确样本",
+      "slug": "positive",
+      "aliases": [
+        "positive",
+        "correct",
+        "true",
+        "target",
+        "tile",
+        "node",
+        "plot",
+        "目标",
+        "地块"
+      ]
+    },
+    "negative_class": {
+      "display_name": "错误样本",
+      "slug": "negative",
+      "aliases": [
+        "negative",
+        "wrong",
+        "false",
+        "background",
+        "bg",
+        "other",
+        "not_plot",
+        "notplot",
+        "误检",
+        "背景",
+        "非地块"
+      ]
+    }
+  },
   "attribute_tasks": [
     {
       "display_name": "等级",

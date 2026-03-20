@@ -65,6 +65,31 @@ CLASS_HINTS = {
 
 ATTRIBUTE_VALUE_SPLIT_PATTERN = re.compile(r"[,，;；、]+")
 INVALID_PROJECT_CHARS = set('<>:"/\\|?*')
+DEFAULT_REVIEW_TASK_SLUG = "candidate_review"
+DEFAULT_REVIEW_DISPLAY_NAME = "候选框复检"
+DEFAULT_REVIEW_THRESHOLD = 0.75
+DEFAULT_REVIEW_POSITIVE_CLASS = {
+    "display_name": "正确样本",
+    "slug": "positive",
+    "aliases": ["positive", "correct", "true", "target", "tile", "node", "plot", "目标", "地块"],
+}
+DEFAULT_REVIEW_NEGATIVE_CLASS = {
+    "display_name": "错误样本",
+    "slug": "negative",
+    "aliases": [
+        "negative",
+        "wrong",
+        "false",
+        "background",
+        "bg",
+        "other",
+        "not_plot",
+        "notplot",
+        "误检",
+        "背景",
+        "非地块",
+    ],
+}
 
 
 def _unique_list(items: list[str]) -> list[str]:
@@ -80,6 +105,123 @@ def _unique_list(items: list[str]) -> list[str]:
         seen.add(marker)
         result.append(text)
     return result
+
+
+def build_default_review_classifier_config() -> dict[str, Any]:
+    return {
+        "task_slug": DEFAULT_REVIEW_TASK_SLUG,
+        "display_name": DEFAULT_REVIEW_DISPLAY_NAME,
+        "weights": "",
+        "threshold": DEFAULT_REVIEW_THRESHOLD,
+        "positive_class": {
+            "display_name": str(DEFAULT_REVIEW_POSITIVE_CLASS["display_name"]),
+            "slug": str(DEFAULT_REVIEW_POSITIVE_CLASS["slug"]),
+            "aliases": list(DEFAULT_REVIEW_POSITIVE_CLASS["aliases"]),
+        },
+        "negative_class": {
+            "display_name": str(DEFAULT_REVIEW_NEGATIVE_CLASS["display_name"]),
+            "slug": str(DEFAULT_REVIEW_NEGATIVE_CLASS["slug"]),
+            "aliases": list(DEFAULT_REVIEW_NEGATIVE_CLASS["aliases"]),
+        },
+    }
+
+
+def _normalize_review_class(
+    raw_class: object,
+    *,
+    role: str,
+    default_class: dict[str, Any],
+    legacy_aliases: object = None,
+) -> dict[str, Any]:
+    class_config = raw_class if isinstance(raw_class, dict) else {}
+    display_name = str(class_config.get("display_name") or default_class["display_name"]).strip()
+    if not display_name:
+        display_name = str(default_class["display_name"])
+
+    slug = slugify_identifier(
+        str(class_config.get("slug") or default_class["slug"]),
+        str(default_class["slug"]),
+    )
+    raw_aliases = class_config.get("aliases")
+    alias_items = raw_aliases if isinstance(raw_aliases, (list, tuple, set)) else []
+    legacy_items = legacy_aliases if isinstance(legacy_aliases, (list, tuple, set)) else []
+    aliases = _unique_list(
+        [
+            display_name,
+            slug,
+            *(str(item) for item in alias_items),
+            *(str(item) for item in default_class.get("aliases", [])),
+            *(str(item) for item in legacy_items),
+        ]
+    )
+    return {
+        "role": role,
+        "display_name": display_name,
+        "slug": slug,
+        "aliases": aliases,
+    }
+
+
+def normalize_review_classifier_config(raw_config: object) -> dict[str, Any] | None:
+    if raw_config in (None, False):
+        return None
+    if not isinstance(raw_config, dict):
+        return None
+    if raw_config.get("enabled") is False:
+        return None
+
+    task_slug = slugify_identifier(str(raw_config.get("task_slug") or DEFAULT_REVIEW_TASK_SLUG), DEFAULT_REVIEW_TASK_SLUG)
+    display_name = str(raw_config.get("display_name") or DEFAULT_REVIEW_DISPLAY_NAME).strip() or DEFAULT_REVIEW_DISPLAY_NAME
+
+    positive_class = _normalize_review_class(
+        raw_config.get("positive_class"),
+        role="positive",
+        default_class=DEFAULT_REVIEW_POSITIVE_CLASS,
+    )
+    negative_class = _normalize_review_class(
+        raw_config.get("negative_class"),
+        role="negative",
+        default_class=DEFAULT_REVIEW_NEGATIVE_CLASS,
+    )
+
+    if positive_class["slug"] == negative_class["slug"]:
+        negative_slug = slugify_identifier(f"{negative_class['slug']}_negative", "negative")
+        negative_class["slug"] = negative_slug
+        negative_class["aliases"] = _unique_list([negative_class["display_name"], negative_slug, *negative_class["aliases"]])
+
+    try:
+        threshold = float(raw_config.get("threshold", DEFAULT_REVIEW_THRESHOLD) or DEFAULT_REVIEW_THRESHOLD)
+    except (TypeError, ValueError):
+        threshold = DEFAULT_REVIEW_THRESHOLD
+
+    classes = [positive_class, negative_class]
+    return {
+        "task_slug": task_slug,
+        "display_name": display_name,
+        "weights": str(raw_config.get("weights") or "").strip(),
+        "threshold": max(0.0, min(1.0, threshold)),
+        "positive_class": positive_class,
+        "negative_class": negative_class,
+        "positive_class_slug": str(positive_class["slug"]),
+        "negative_class_slug": str(negative_class["slug"]),
+        "classes": classes,
+        "class_display_map": {str(item["slug"]): str(item["display_name"]) for item in classes},
+        "positive_aliases": list(positive_class["aliases"]),
+        "negative_aliases": list(negative_class["aliases"]),
+    }
+
+
+def get_review_classifier_config(
+    project_meta: dict[str, Any] | None,
+    *,
+    default_if_missing: bool = False,
+) -> dict[str, Any] | None:
+    raw_config = None
+    if isinstance(project_meta, dict):
+        raw_config = project_meta.get("review_classifier")
+    if raw_config is None and default_if_missing:
+        raw_config = build_default_review_classifier_config()
+    return normalize_review_classifier_config(raw_config)
 
 
 def slugify_identifier(text: str, fallback: str) -> str:
@@ -242,6 +384,7 @@ def build_project_meta(
         "detection_run_name": detection_run_name,
         "attribute_spec_text": attribute_spec_text.strip(),
         "attribute_tasks": tasks,
+        "review_classifier": build_default_review_classifier_config(),
         "paths": _relative_paths(),
     }
 
@@ -271,6 +414,11 @@ def _build_project_readme(project_meta: dict[str, Any]) -> str:
     run_name = project_meta["detection_run_name"]
     export_script_name = _get_export_script_name(project_meta)
     benchmark_script_name = _get_benchmark_script_name(project_meta)
+    review_config = get_review_classifier_config(project_meta, default_if_missing=True)
+    assert review_config is not None
+    review_task_slug = str(review_config["task_slug"])
+    positive_class = dict(review_config["positive_class"])
+    negative_class = dict(review_config["negative_class"])
     return "\n".join(
         [
             f"# {project_name} AI 训练项目",
@@ -283,6 +431,12 @@ def _build_project_readme(project_meta: dict[str, Any]) -> str:
             f"- 检测训练名: {run_name}",
             "当前属性任务：",
             *task_lines,
+            "",
+            "可选候选框复检模型：",
+            f"- 默认 task_slug: {review_task_slug}",
+            f"- 样本类别: {positive_class['display_name']} ({positive_class['slug']}) / {negative_class['display_name']} ({negative_class['slug']})",
+            f"- 训练完成后可把权重放到 outputs/train_attr/{review_task_slug}_yolov8n_cls/weights/best.pt",
+            "- 也可以在 project_meta.json 的 review_classifier.weights 里手动指定路径",
             "",
             "## 目录说明",
             "",
@@ -305,6 +459,7 @@ def _build_project_readme(project_meta: dict[str, Any]) -> str:
             "8. 运行 scripts/04_train_detection.cmd",
             f"9. 运行 scripts/{export_script_name}",
             f"10. 运行 scripts/{benchmark_script_name}",
+            f"11. 如果要启用候选框复检，额外训练一个 {review_task_slug} 二分类模型并放到 outputs/train_attr 下",
             "",
             "## AnyLabeling 使用要点",
             "",
@@ -345,14 +500,20 @@ def _build_project_checklist(project_meta: dict[str, Any]) -> str:
             "",
             *task_lines,
             "",
-            "## 3. 固定路径",
+            "## 3. 困难负样本",
+            "",
+            "- 不要给树林、乱石、道路纹理这类假目标单独画负类框",
+            "- 正确做法是保留整张图，只标真地块；如果整张图都没有目标，也保存空 JSON",
+            "- 这些图在同步后会生成空 txt 或只含真地块的 txt，可直接作为困难负样本参与训练",
+            "",
+            "## 4. 固定路径",
             "",
             "- 原图目录: datasets/detection/raw/images",
             "- JSON 标签目录: datasets/detection/raw/labels",
             "- 类别文件: configs/label_classes.txt",
             "- 属性文件: configs/attributes.json",
             "",
-            "## 4. 标完后怎么做",
+            "## 5. 标完后怎么做",
             "",
             "1. 运行 scripts/01_sync_annotations.cmd 生成检测 txt 和属性裁剪集",
             "2. 运行 scripts/02_check_labels.cmd 抽检检测框",
@@ -428,6 +589,11 @@ def _build_detection_readme(project_meta: dict[str, Any]) -> str:
 
 
 def _build_attribute_readme(project_meta: dict[str, Any]) -> str:
+    review_config = get_review_classifier_config(project_meta, default_if_missing=True)
+    assert review_config is not None
+    review_task_slug = str(review_config["task_slug"])
+    positive_class = dict(review_config["positive_class"])
+    negative_class = dict(review_config["negative_class"])
     lines = [
         "# attribute_cls 说明",
         "",
@@ -445,6 +611,15 @@ def _build_attribute_readme(project_meta: dict[str, Any]) -> str:
         "",
     ]
     lines.extend(_render_task_summary_lines(project_meta))
+    lines.extend(
+        [
+            "",
+            "可选候选框复检任务：",
+            "",
+            f"- {review_task_slug}/raw/{positive_class['slug']}: {positive_class['display_name']}裁剪图",
+            f"- {review_task_slug}/raw/{negative_class['slug']}: {negative_class['display_name']}裁剪图",
+        ]
+    )
     lines.append("")
     return "\n".join(lines)
 
@@ -514,6 +689,8 @@ def _build_wrapper_files(project_meta: dict[str, Any]) -> dict[str, str]:
 
 
 def _expected_generated_relative_paths(project_meta: dict[str, Any]) -> list[str]:
+    review_config = get_review_classifier_config(project_meta, default_if_missing=True)
+    assert review_config is not None
     relative_paths = [
         "project_meta.json",
         "README.md",
@@ -527,11 +704,17 @@ def _expected_generated_relative_paths(project_meta: dict[str, Any]) -> list[str
     ]
     for task in project_meta["attribute_tasks"]:
         relative_paths.append(f"datasets/attribute_cls/{task['slug']}/classes.txt")
+    relative_paths.append(f"datasets/attribute_cls/{review_config['task_slug']}/classes.txt")
     relative_paths.extend(_build_wrapper_files(project_meta).keys())
     return relative_paths
 
 
 def _ensure_directories(project_root: Path, project_meta: dict[str, Any]) -> list[Path]:
+    review_config = get_review_classifier_config(project_meta, default_if_missing=True)
+    assert review_config is not None
+    review_task_slug = str(review_config["task_slug"])
+    positive_slug = str(review_config["positive_class_slug"])
+    negative_slug = str(review_config["negative_class_slug"])
     directories = [
         project_root,
         project_root / "configs",
@@ -544,6 +727,13 @@ def _ensure_directories(project_root: Path, project_meta: dict[str, Any]) -> lis
         project_root / "datasets" / "detection" / "labels" / "val",
         project_root / "datasets" / "detection" / "labels" / "test",
         project_root / "datasets" / "attribute_cls",
+        project_root / "datasets" / "attribute_cls" / review_task_slug,
+        project_root / "datasets" / "attribute_cls" / review_task_slug / "raw",
+        project_root / "datasets" / "attribute_cls" / review_task_slug / "raw" / positive_slug,
+        project_root / "datasets" / "attribute_cls" / review_task_slug / "raw" / negative_slug,
+        project_root / "datasets" / "attribute_cls" / review_task_slug / "train",
+        project_root / "datasets" / "attribute_cls" / review_task_slug / "val",
+        project_root / "datasets" / "attribute_cls" / review_task_slug / "test",
         project_root / "datasets" / "smoke_tests",
         project_root / "models" / "detector",
         project_root / "outputs",
@@ -589,6 +779,8 @@ def _write_json(path: Path, content: dict[str, Any]) -> Path:
 
 
 def _write_project_files(project_root: Path, project_meta: dict[str, Any]) -> list[Path]:
+    review_config = get_review_classifier_config(project_meta, default_if_missing=True)
+    assert review_config is not None
     written_files: list[Path] = []
     written_files.append(_write_json(project_root / "project_meta.json", project_meta))
     written_files.append(_write_text(project_root / "README.md", _build_project_readme(project_meta)))
@@ -603,6 +795,18 @@ def _write_project_files(project_root: Path, project_meta: dict[str, Any]) -> li
     for task in project_meta["attribute_tasks"]:
         classes_text = "\n".join(class_info["slug"] for class_info in task["classes"]) + "\n"
         written_files.append(_write_text(project_root / "datasets" / "attribute_cls" / task["slug"] / "classes.txt", classes_text))
+
+    written_files.append(
+        _write_text(
+            project_root / "datasets" / "attribute_cls" / str(review_config["task_slug"]) / "classes.txt",
+            "\n".join(
+                [
+                    str(review_config["positive_class_slug"]),
+                    str(review_config["negative_class_slug"]),
+                ]
+            ) + "\n",
+        )
+    )
 
     for relative_path, content in _build_wrapper_files(project_meta).items():
         written_files.append(_write_text(project_root / relative_path, content))

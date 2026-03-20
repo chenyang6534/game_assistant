@@ -11,6 +11,12 @@
 - 类型 (resource_type): 木材 (wood), 石头 (stone), 铁矿 (iron), 铜矿 (copper), 粮食 (food)
 - 关系 (relation): 同盟 (ally), 友盟 (friendly), 中立 (neutral), 敌对 (enemy), 我方 (self)
 
+可选候选框复检模型：
+- 默认 task_slug: candidate_review
+- 样本类别: 正确样本 (positive) / 错误样本 (negative)
+- 训练完成后可把权重放到 outputs/train_attr/candidate_review_yolov8n_cls/weights/best.pt
+- 也可以在 project_meta.json 的 review_classifier.weights 里手动指定路径
+
 ## 目录说明
 
 - configs: 类别、属性和导出元数据模板
@@ -32,6 +38,7 @@
 8. 运行 scripts/04_train_detection.cmd
 9. 运行 scripts/11_export_onnx.cmd
 10. 运行 scripts/12_benchmark.cmd
+11. 如果要启用候选框复检，额外训练一个 candidate_review 二分类模型并放到 outputs/train_attr 下
 
 ## AnyLabeling 使用要点
 
