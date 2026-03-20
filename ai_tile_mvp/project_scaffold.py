@@ -299,7 +299,7 @@ def _build_class_aliases(task_slug: str, display_name: str, slug: str) -> list[s
 def parse_attribute_spec_text(spec_text: str) -> list[dict[str, Any]]:
     lines = [line.strip() for line in str(spec_text).splitlines() if line.strip()]
     if not lines:
-        raise ValueError("至少需要定义一个属性")
+        return []
 
     tasks: list[dict[str, Any]] = []
     used_task_slugs: set[str] = set()
@@ -364,6 +364,7 @@ def _relative_paths() -> dict[str, str]:
         "outputs_train": "outputs/train",
         "outputs_train_attr": "outputs/train_attr",
         "outputs_benchmark": "outputs/benchmark_preview",
+        "outputs_model_packages": "outputs/model_packages",
         "scripts_root": "scripts",
     }
 
@@ -396,6 +397,8 @@ def _render_task_summary_lines(project_meta: dict[str, Any]) -> list[str]:
             f"{class_info['display_name']} ({class_info['slug']})" for class_info in task["classes"]
         )
         lines.append(f"- {task['display_name']} ({task['slug']}): {value_text}")
+    if not lines:
+        lines.append("- 当前未定义属性任务，运行时只使用检测模型和可选候选框复检模型")
     return lines
 
 
@@ -437,6 +440,8 @@ def _build_project_readme(project_meta: dict[str, Any]) -> str:
             f"- 样本类别: {positive_class['display_name']} ({positive_class['slug']}) / {negative_class['display_name']} ({negative_class['slug']})",
             f"- 训练完成后可把权重放到 outputs/train_attr/{review_task_slug}_yolov8n_cls/weights/best.pt",
             "- 也可以在 project_meta.json 的 review_classifier.weights 里手动指定路径",
+            "- 若要发给其他人用，建议再导出一个自包含模型包，里面会同时带上 onnx、project_meta 和属性/复检 best.pt",
+            "- 对方在主程序里优先选择模型包根目录下的 model_package.gaimodel.json；旧版主程序也可以直接选包内 models/detector/*.onnx",
             "",
             "## 目录说明",
             "",
@@ -520,6 +525,7 @@ def _build_project_checklist(project_meta: dict[str, Any]) -> str:
             "3. 运行 scripts/03_split_detection.cmd 做检测切分",
             "4. 运行属性切分和属性训练脚本",
             "5. 最后跑检测训练、导出和基准测试",
+            "6. 如果要分发给别人运行主程序，再执行 scripts/export_model_package.cmd",
             "",
         ]
     )
@@ -681,6 +687,9 @@ def _build_wrapper_files(project_meta: dict[str, Any]) -> dict[str, str]:
     wrapper_files[f"scripts/{export_script_name}"] = _build_command_wrapper(
         f'python "%AI_ROOT%\\scripts\\export_yolo_onnx.py" --weights "%PROJECT_ROOT%\\outputs\\train\\{run_name}\\weights\\best.pt" --output "%PROJECT_ROOT%\\models\\detector\\{run_name}_640.onnx" --meta-template "%PROJECT_ROOT%\\configs\\model_meta.template.json"'
     )
+    wrapper_files["scripts/export_model_package.cmd"] = _build_command_wrapper(
+        f'python "%AI_ROOT%\\scripts\\export_model_package.py" --project-config "%PROJECT_ROOT%\\project_meta.json" --detector-model "%PROJECT_ROOT%\\models\\detector\\{run_name}_640.onnx" --output-dir "%PROJECT_ROOT%\\outputs\\model_packages\\{project_meta["project_slug"]}_model_bundle" --zip --overwrite'
+    )
     wrapper_files[f"scripts/{benchmark_script_name}"] = _build_command_wrapper(
         f'python "%AI_ROOT%\\scripts\\benchmark_onnx_tile.py" --model "%PROJECT_ROOT%\\models\\detector\\{run_name}_640.onnx" --image-dir "%PROJECT_ROOT%\\datasets\\detection\\images\\test" --label-dir "%PROJECT_ROOT%\\datasets\\detection\\labels\\test" --output-dir "%PROJECT_ROOT%\\outputs\\benchmark_preview"'
     )
@@ -741,6 +750,7 @@ def _ensure_directories(project_root: Path, project_meta: dict[str, Any]) -> lis
         project_root / "outputs" / "train",
         project_root / "outputs" / "train_attr",
         project_root / "outputs" / "benchmark_preview",
+        project_root / "outputs" / "model_packages",
         project_root / "scripts",
     ]
 

@@ -2403,9 +2403,10 @@ class StepEditDialog(QDialog):
         form.addRow("识别目标:", target_layout)
 
         self._ai_tile_usage_hint = QLabel(
-            "AI 地块识别成功后会自动写入运行时变量：{ai_tile_result.level}、{ai_tile_result.level_display}、"
-            "{ai_tile_result.level_confidence}、{ai_tile_result.resource_type}、{ai_tile_result.resource_type_confidence}、"
-            "{ai_tile_result.relation}、{ai_tile_result.relation_confidence}。如勾选“此图像有多个匹配”，还会写入数组 ai_tile_results。"
+            "AI 地块识别成功后会自动写入运行时变量：{ai_tile_result.<属性slug>}、"
+            "{ai_tile_result.<属性slug>_display}、{ai_tile_result.<属性slug>_confidence}；"
+            "也可以读取 {ai_tile_result.attribute_results.<属性slug>.display} 这类通用字段。"
+            "如勾选“此图像有多个匹配”，还会写入数组 ai_tile_results。"
         )
         self._ai_tile_usage_hint.setWordWrap(True)
         self._ai_tile_usage_hint.setStyleSheet("color: gray;")
@@ -3706,11 +3707,11 @@ class StepEditDialog(QDialog):
             self._browse_btn.setText("浏览...")
         elif is_ai_tile:
             _set_combo_data(self._target_mode_combo, "single")
-            self._target_edit.setPlaceholderText("可选：指定 onnx 模型路径；留空则使用 models/tile_detector 下最新 onnx 模型")
+            self._target_edit.setPlaceholderText("可选：指定 onnx、.gaimodel.json 或 .zip 模型包；留空则使用 models/tile_detector 下最新 onnx 模型")
             self._threshold_spin.setValue(0.35)
             self._threshold_spin.setToolTip("AI 地块识别的最低置信度，建议 0.25-0.5；值越低召回越高，但误检也会增加")
-            self._target_edit.setToolTip("使用项目内 detector onnx 时，若同项目 outputs/train_attr 下存在属性 best.pt，主程序会自动补全等级/类型/关系")
-            self._browse_btn.setText("选择模型...")
+            self._target_edit.setToolTip("可直接选择项目内 detector onnx，或导出的 .zip / .gaimodel.json 模型包；主程序会自动解压并加载同包内的属性模型和候选框复检模型")
+            self._browse_btn.setText("选择模型/模型包...")
         elif is_multi_image:
             self._target_edit.setPlaceholderText("多张图片路径，用 | 分隔；适合动画帧模板，任意一张命中即成功")
             self._threshold_spin.setValue(0.8)
@@ -3795,9 +3796,9 @@ class StepEditDialog(QDialog):
         if recognition_type == "ai_tile":
             filepath, _ = QFileDialog.getOpenFileName(
                 self,
-                "选择 AI 地块模型",
+                "选择 AI 地块模型或模型包（支持 ZIP）",
                 "",
-                "ONNX 模型 (*.onnx);;所有文件 (*.*)"
+                "AI 模型/模型包 (*.onnx *.gaimodel.json *.zip);;ZIP 模型包 (*.zip);;模型包清单 (*.gaimodel.json);;ONNX 模型 (*.onnx);;所有文件 (*.*)"
             )
             if not filepath:
                 return

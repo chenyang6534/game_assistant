@@ -52,6 +52,7 @@ if str(APP_ROOT) not in sys.path:
     sys.path.insert(0, str(APP_ROOT))
 
 from core.window import WindowManager
+from ai_tile_mvp.model_package import import_model_package
 from ai_tile_mvp.project_scaffold import (
     DEFAULT_ATTRIBUTE_SPEC_TEXT,
     DEFAULT_PROJECTS_ROOT,
@@ -405,6 +406,11 @@ def get_project_outputs_benchmark_dir(project_info: dict[str, Any] | None) -> Pa
     return get_project_path_by_key(project_info, "outputs_benchmark", AI_ROOT / "outputs" / "benchmark_preview")
 
 
+def get_project_outputs_model_packages_dir(project_info: dict[str, Any] | None) -> Path:
+    fallback_root = AI_ROOT / "outputs" / "model_packages"
+    return get_project_path_by_key(project_info, "outputs_model_packages", fallback_root)
+
+
 def get_project_label_classes_file(project_info: dict[str, Any] | None) -> Path:
     return get_project_file(project_info, "configs/label_classes.txt", DEFAULT_LABELS_FILE)
 
@@ -481,6 +487,15 @@ def get_project_detection_meta_path(project_info: dict[str, Any] | None) -> Path
         assert project_root is not None
         return (project_root / "models" / "detector" / f"{run_name}_640.json").resolve()
     return get_full_detection_meta_path()
+
+
+def get_project_model_package_output_dir(project_info: dict[str, Any] | None, model_path: Path | None = None) -> Path:
+    output_root = get_project_outputs_model_packages_dir(project_info)
+    chosen_model = model_path
+    if chosen_model is None:
+        chosen_model = get_project_detection_model_path(project_info)
+    model_stem = chosen_model.stem if chosen_model else "ai_tile_model"
+    return (output_root / f"{model_stem}_bundle").resolve()
 
 
 class ProjectContext(QObject):
@@ -1514,8 +1529,8 @@ class ProjectCreationTab(WorkflowTabBase):
         self._attributes_table.setEditTriggers(QAbstractItemView.EditTrigger.DoubleClicked | QAbstractItemView.EditTrigger.EditKeyPressed | QAbstractItemView.EditTrigger.SelectedClicked)
         self._attributes_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         self._attributes_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        self._overwrite_check = QCheckBox("允许覆盖同名项目里的已生成文件")
-        self._open_after_create_check = QCheckBox("创建后自动打开项目目录")
+        self._overwrite_check = QCheckBox("允许覆盖同名项目目录里的已生成文件")
+        self._open_after_create_check = QCheckBox("创建/导入后自动打开项目目录")
         self._open_after_create_check.setChecked(True)
         self._target_dir_label = QLabel()
         self._target_dir_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
@@ -1533,6 +1548,8 @@ class ProjectCreationTab(WorkflowTabBase):
         self._reset_attrs_button.clicked.connect(lambda: self._load_attribute_rows(DEFAULT_ATTRIBUTE_SPEC_TEXT))
         self._create_button = QPushButton("创建 AI 训练项目")
         self._create_button.clicked.connect(self._create_project)
+        self._import_package_button = QPushButton("导入模型包")
+        self._import_package_button.clicked.connect(self._import_model_package)
         self._open_project_button = QPushButton("打开项目目录")
         self._open_project_button.clicked.connect(self._open_project_root)
 
@@ -1540,6 +1557,7 @@ class ProjectCreationTab(WorkflowTabBase):
             "这里用来创建独立 AI 训练项目。项目名例如 test1，创建后会在该目录下生成 configs、datasets、models、outputs、scripts、README 等整套文件。"
             "现在改成表格编辑属性。左列填属性名，右列填可选值列表。"
             "如果你想手动指定 slug，也支持在单元格里写“属性名=>task_slug”或“值=>slug”。"
+            "如果别人已经给了你 .zip 或 .gaimodel.json 模型包，也可以直接点下面的“导入模型包”，工作台会自动解压、复制到项目目录并刷新项目列表。"
         )
         note.setWordWrap(True)
         note.setStyleSheet("color: #444;")
@@ -1570,6 +1588,7 @@ class ProjectCreationTab(WorkflowTabBase):
 
         button_row = QHBoxLayout()
         button_row.addWidget(self._create_button)
+        button_row.addWidget(self._import_package_button)
         button_row.addWidget(self._open_project_button)
         button_row.addStretch()
 
@@ -1681,6 +1700,59 @@ class ProjectCreationTab(WorkflowTabBase):
             f"生成文件数: {len(written_files)}",
         )
 
+    def _import_model_package(self) -> None:
+        package_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "选择模型包",
+            self._base_dir_edit.text().strip() or str(DEFAULT_PROJECTS_ROOT),
+            "AI 模型包 (*.zip *.gaimodel.json);;ZIP 压缩包 (*.zip);;模型包清单 (*.gaimodel.json);;项目配置 (*.json);;所有文件 (*.*)",
+        )
+        if not package_path:
+            return
+
+        self._log_edit.clear()
+        self._status_label.setText("状态: 导入中")
+        self._set_running_state(True)
+        try:
+            result = import_model_package(
+                package_path,
+                self._base_dir_edit.text().strip() or str(DEFAULT_PROJECTS_ROOT),
+                allow_overwrite=self._overwrite_check.isChecked(),
+            )
+        except Exception as exc:
+            self._status_label.setText("状态: 导入失败")
+            self._append_log(f"导入模型包失败: {exc}\n")
+            QMessageBox.critical(self, "导入失败", str(exc))
+            self._set_running_state(False)
+            return
+
+        project_root = Path(result["project_root"])
+        project_meta = result["project_meta"]
+        warnings = list(result.get("warnings") or [])
+
+        self._status_label.setText("状态: 已导入")
+        self._append_log(f"模型包来源: {result['source_path']}\n")
+        self._append_log(f"导入方式: {result['source_type']}\n")
+        self._append_log(f"项目目录: {project_root}\n")
+        self._append_log(f"项目名: {project_meta.get('project_name') or project_root.name}\n")
+        self._append_log(f"属性任务数: {len(project_meta.get('attribute_tasks') or [])}\n")
+        if warnings:
+            self._append_log("\n导入警告:\n")
+            for item in warnings:
+                self._append_log(f"- {item}\n")
+
+        self._set_running_state(False)
+        self.projectCreated.emit(project_root)
+        if self._open_after_create_check.isChecked():
+            open_local_path(project_root)
+        QMessageBox.information(
+            self,
+            "导入完成",
+            f"模型包已导入:\n{project_root}\n\n"
+            f"项目名: {project_meta.get('project_name') or project_root.name}\n"
+            f"属性任务数: {len(project_meta.get('attribute_tasks') or [])}",
+        )
+
     def _set_running_state(self, running: bool) -> None:
         self._base_dir_edit.setEnabled(not running)
         self._project_name_edit.setEnabled(not running)
@@ -1693,6 +1765,7 @@ class ProjectCreationTab(WorkflowTabBase):
         self._remove_attr_button.setEnabled(not running)
         self._reset_attrs_button.setEnabled(not running)
         self._create_button.setEnabled(not running)
+        self._import_package_button.setEnabled(not running)
         self._open_project_button.setEnabled(not running)
 
 
@@ -3930,6 +4003,7 @@ class ExportTab(ProjectAwareTabBase):
         self._weights_edit = QLineEdit(str(get_default_smoke_weights_path()))
         self._output_edit = QLineEdit(str(get_default_smoke_model_path()))
         self._meta_output_edit = QLineEdit("")
+        self._package_output_edit = QLineEdit(str(get_project_model_package_output_dir(None, Path(get_default_smoke_model_path()))))
         self._imgsz_spin = QSpinBox()
         self._imgsz_spin.setRange(64, 4096)
         self._imgsz_spin.setSingleStep(32)
@@ -3949,19 +4023,25 @@ class ExportTab(ProjectAwareTabBase):
         self._dynamic_check = QCheckBox("导出动态尺寸")
         self._half_check = QCheckBox("导出半精度")
         self._nms_check = QCheckBox("导出时内置 NMS")
+        self._package_zip_check = QCheckBox("导出模型包后同时生成 ZIP 压缩包")
+        self._package_zip_check.setChecked(True)
 
         self._export_button = QPushButton("导出 ONNX")
         self._export_button.clicked.connect(self._run_export)
+        self._export_package_button = QPushButton("导出模型包")
+        self._export_package_button.clicked.connect(self._run_export_package)
         self._stop_button = QPushButton("停止")
         self._stop_button.clicked.connect(self._stop_process)
         self._open_output_button = QPushButton("打开模型目录")
         self._open_output_button.clicked.connect(lambda: open_local_path(Path(self._output_edit.text().strip()).parent))
+        self._open_package_button = QPushButton("打开模型包目录")
+        self._open_package_button.clicked.connect(lambda: open_local_path(Path(self._package_output_edit.text().strip()).parent))
         self._use_smoke_defaults_button = QPushButton("套用当前快测数据")
         self._use_smoke_defaults_button.clicked.connect(self._apply_smoke_defaults)
         self._use_full_defaults_button = QPushButton("切回完整检测数据")
         self._use_full_defaults_button.clicked.connect(self._apply_full_defaults)
 
-        note = QLabel("这里可以导出当前项目的完整训练产物，也可以切到当前单目标快测对应的训练产物。")
+        note = QLabel("这里可以导出检测 ONNX，也可以额外导出一个可分发的模型包。模型包会同时带上 project_meta、属性 best.pt 和候选框复检 best.pt，适合直接发给别人运行主程序。")
         note.setWordWrap(True)
         note.setStyleSheet("color: #444;")
 
@@ -3970,9 +4050,11 @@ class ExportTab(ProjectAwareTabBase):
         weights_row, self._weights_browse_button = build_path_row(self._weights_edit, "浏览...", lambda: self._choose_open_file(self._weights_edit, "选择权重文件", "PyTorch 权重 (*.pt);;所有文件 (*.*)"))
         output_row, self._output_browse_button = build_path_row(self._output_edit, "保存为...", lambda: self._choose_save_file(self._output_edit, "保存 ONNX 模型", "ONNX 模型 (*.onnx)"))
         meta_row, self._meta_browse_button = build_path_row(self._meta_output_edit, "保存为...", lambda: self._choose_save_file(self._meta_output_edit, "保存模型元数据", "JSON 文件 (*.json)"))
+        package_row, self._package_output_browse_button = build_path_row(self._package_output_edit, "浏览...", lambda: self._choose_directory(self._package_output_edit))
         config_layout.addRow("权重文件:", weights_row)
         config_layout.addRow("ONNX 输出:", output_row)
         config_layout.addRow("元数据输出:", meta_row)
+        config_layout.addRow("模型包输出目录:", package_row)
         config_layout.addRow("输入尺寸:", self._imgsz_spin)
         config_layout.addRow("默认置信度阈值:", self._conf_spin)
         config_layout.addRow("默认 IoU 阈值:", self._iou_spin)
@@ -3981,13 +4063,16 @@ class ExportTab(ProjectAwareTabBase):
         config_layout.addRow("", self._dynamic_check)
         config_layout.addRow("", self._half_check)
         config_layout.addRow("", self._nms_check)
+        config_layout.addRow("", self._package_zip_check)
 
         button_row = QHBoxLayout()
         button_row.addWidget(self._use_smoke_defaults_button)
         button_row.addWidget(self._use_full_defaults_button)
         button_row.addWidget(self._export_button)
+        button_row.addWidget(self._export_package_button)
         button_row.addWidget(self._stop_button)
         button_row.addWidget(self._open_output_button)
+        button_row.addWidget(self._open_package_button)
         button_row.addStretch()
 
         main_layout = QVBoxLayout(self)
@@ -4004,19 +4089,29 @@ class ExportTab(ProjectAwareTabBase):
         self._weights_edit.setText(str(get_project_outputs_train_dir(self._project_info) / smoke_run_name / "weights" / "best.pt"))
         self._output_edit.setText(str(get_project_root(self._project_info) / "models" / "detector" / f"{smoke_run_name}_640.onnx") if self._project_info else get_default_smoke_model_path())
         self._meta_output_edit.setText("")
+        self._sync_package_output_path()
 
     def _apply_full_defaults(self) -> None:
         self._weights_edit.setText(str(get_project_detection_weights_path(self._project_info)))
         self._output_edit.setText(str(get_project_detection_model_path(self._project_info)))
         self._meta_output_edit.setText("")
+        self._sync_package_output_path()
+
+    def _sync_package_output_path(self) -> None:
+        model_text = self._output_edit.text().strip()
+        model_path = Path(model_text) if model_text else None
+        self._package_output_edit.setText(str(get_project_model_package_output_dir(self._project_info, model_path)))
 
     def _set_running_state(self, running: bool) -> None:
         self._export_button.setEnabled(not running)
+        self._export_package_button.setEnabled(not running)
         self._weights_browse_button.setEnabled(not running)
         self._output_browse_button.setEnabled(not running)
         self._meta_browse_button.setEnabled(not running)
+        self._package_output_browse_button.setEnabled(not running)
         self._use_smoke_defaults_button.setEnabled(not running)
         self._use_full_defaults_button.setEnabled(not running)
+        self._package_zip_check.setEnabled(not running)
         self._stop_button.setEnabled(running)
 
     def _run_export(self) -> None:
@@ -4049,6 +4144,33 @@ class ExportTab(ProjectAwareTabBase):
         if self._nms_check.isChecked():
             args.append("--nms")
         self._run_python_script(script_path, args, "导出 ONNX 模型")
+
+    def _run_export_package(self) -> None:
+        if not self._project_info:
+            QMessageBox.warning(self, "提示", "导出模型包需要先选择一个项目")
+            return
+
+        project_root = get_project_root(self._project_info)
+        if project_root is None:
+            QMessageBox.warning(self, "提示", "当前项目路径无效，无法导出模型包")
+            return
+
+        script_path = AI_ROOT / "scripts" / "export_model_package.py"
+        args = [
+            "--project-config",
+            str(project_root / PROJECT_META_FILENAME),
+            "--detector-model",
+            self._output_edit.text().strip() or str(get_project_detection_model_path(self._project_info)),
+            "--output-dir",
+            self._package_output_edit.text().strip(),
+            "--overwrite",
+        ]
+        meta_output = self._meta_output_edit.text().strip()
+        if meta_output:
+            args.extend(["--detector-meta", meta_output])
+        if self._package_zip_check.isChecked():
+            args.append("--zip")
+        self._run_python_script(script_path, args, "导出可分发模型包")
 
     def apply_project_context(self, project_info: dict[str, Any] | None) -> None:
         self._apply_full_defaults()

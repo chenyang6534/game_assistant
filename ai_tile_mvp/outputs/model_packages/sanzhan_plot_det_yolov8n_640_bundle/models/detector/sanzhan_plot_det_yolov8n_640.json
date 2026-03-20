@@ -1,0 +1,12 @@
+{
+  "input_size": 640,
+  "conf_threshold": 0.1,
+  "iou_threshold": 0.5,
+  "max_detections": 300,
+  "class_names": [
+    "sanzhan_plot_node"
+  ],
+  "letterbox": true,
+  "normalize": true,
+  "version": "exported-640"
+}

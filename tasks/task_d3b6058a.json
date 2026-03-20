@@ -7,7 +7,7 @@
       "id": "67d4ad67",
       "name": "未命名步骤",
       "recognition_type": "ai_tile",
-      "recognition_target": "ai_tile_mvp/projects/sanzhan_plot/models/detector/sanzhan_plot_det_yolov8n_640.onnx",
+      "recognition_target": "ai_tile_mvp/outputs/model_packages/sanzhan_plot_det_yolov8n_640_bundle.zip",
       "recognition_target_mode": "single",
       "image_match_mode": "foreground",
       "recognition_roi_mode": "window_percent",
@@ -99,5 +99,5 @@
   "struct_defs": [],
   "blocked_coords": [],
   "created_time": "2026-03-13 18:58:05",
-  "modified_time": "2026-03-20 15:35:24"
+  "modified_time": "2026-03-20 17:43:25"
 }

@@ -32,12 +32,14 @@
 
 1. 安装独立训练依赖
 2. 直接运行 workbench.py 或 启动AI工作台.bat
-3. 在“采样”页里选择目标窗口并开始采样
-4. 在“标注与抽检”页里用单类框 + shape attributes 标注
-5. 运行同步脚本，自动生成单类检测标签和三份属性分类裁剪集
-6. 分别进行检测切分/训练，属性切分/训练
-7. 在“导出”页导出检测 onnx
-8. 在“基准测试”页做离线速度和识别验证
+3. 如果你已经拿到别人发来的模型包，也可以先在“0. 创建项目”页点“导入模型包”，直接导入 .zip 或 .gaimodel.json
+4. 在“采样”页里选择目标窗口并开始采样
+5. 在“标注与抽检”页里用单类框 + shape attributes 标注
+6. 运行同步脚本，自动生成单类检测标签和三份属性分类裁剪集
+7. 分别进行检测切分/训练，属性切分/训练
+8. 在“导出”页导出检测 onnx
+9. 如果要发给别人运行主程序，再在“导出”页导出模型包
+10. 在“基准测试”页做离线速度和识别验证
 
 可选增强：
 
@@ -45,6 +47,7 @@
 - 运行时会先做检测，再用这个二分类模型过滤候选框，最后才进入等级/类型/关系分类。
 - 项目模式下默认会尝试加载 outputs/train_attr/candidate_review_yolov8n_cls/weights/best.pt。
 - 如果你的权重不在这个位置，可以在 project_meta.json 的 review_classifier.weights 里手动指定。
+- “导出”页现在还支持导出自包含模型包；主程序可直接选择导出的 .zip，或包内的 .gaimodel.json 清单，自动挂上同包里的属性模型和候选框复检模型。
 - 工作台现在提供“复检采集”页，左侧图片列表直接读取当前“截图目录”（默认是 detection 原图目录）；同一张图可以连续框多个候选框，点已有框可移动位置、拖四角可调大小，框上会直接显示“未保存 / 正确样本 / 错误样本”状态；左侧图片项会用颜色区分“已存 / 待存”，并标出每张图已存/待存的框数量；右侧也会列出当前图片的全部框，支持按未保存、正确样本、错误样本筛选，点列表项即可快速切换到对应框，也可以直接点“删除选中框”移除当前框；当前激活框可保存到默认的 candidate_review/raw/positive 或 candidate_review/raw/negative；切到别的截图再点回来时，会自动把这张图已保存过的框重新回显出来，方便继续查看和修改；截图列表支持从资源管理器拖图片进来，也支持用 Ctrl+V 或“粘贴剪贴板”导入剪贴板里的图片或图片文件；如果已有 level/resource_type/relation 这类真目标裁剪，还可以在页内直接点“导入已有正确样本”批量复用，并可设置导入数量或随机抽样。
 
 如果你只想先验证可行性，推荐先走单目标快测：
@@ -148,6 +151,12 @@ python ai_tile_mvp/scripts/train_yolo_attribute_cls.py --data-root ai_tile_mvp/d
 python ai_tile_mvp/scripts/export_yolo_onnx.py --weights ai_tile_mvp/outputs/train/plot_node_det_yolov8n/weights/best.pt --output ai_tile_mvp/models/tile_detector/plot_node_det_yolov8n_640.onnx
 ```
 
+导出可分发模型包：
+
+```powershell
+python ai_tile_mvp/scripts/export_model_package.py --project-config ai_tile_mvp/projects/your_project/project_meta.json --detector-model ai_tile_mvp/projects/your_project/models/detector/your_project_det_yolov8n_640.onnx --output-dir ai_tile_mvp/projects/your_project/outputs/model_packages/your_project_model_bundle --zip --overwrite
+```
+
 基准测试：
 
 ```powershell
@@ -159,3 +168,5 @@ python ai_tile_mvp/scripts/benchmark_onnx_tile.py --model ai_tile_mvp/models/til
 数据准备、训练和导出仍在这个独立工作区中完成。
 
 当前主程序已经可以继续做“可选 AI 地块识别”的最小接入，但默认不会替换旧模板识别流程。只有在任务步骤里显式选择 AI 地块识别，并且模型文件存在时，才会使用 AI 检测。
+
+如果要分发给别人使用，优先发“模型包”而不是单个 onnx。别人拿到后可以直接在主程序里选择导出的 .zip，或选择包内的 .gaimodel.json；再退一步选择包内 models/detector 下的 onnx，也能自动加载同包里的属性/复检权重。

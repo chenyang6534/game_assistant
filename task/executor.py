@@ -726,15 +726,26 @@ class TaskExecutor:
         for key in [item for item in self._runtime_vars.keys() if item.startswith(prefix)]:
             self._runtime_vars.pop(key, None)
 
+    def _set_runtime_subfields(self, name: str, value):
+        if isinstance(value, dict):
+            for field_name, field_value in value.items():
+                child_name = f"{name}.{field_name}"
+                self._runtime_vars[child_name] = field_value
+                self._set_runtime_subfields(child_name, field_value)
+            return
+
+        if (
+            isinstance(value, (list, tuple))
+            and len(value) >= 2
+            and not any(isinstance(item, (dict, list, tuple, set)) for item in value[:2])
+        ):
+            self._runtime_vars[f"{name}.x"] = value[0]
+            self._runtime_vars[f"{name}.y"] = value[1]
+
     def _set_runtime_var(self, name: str, value):
         self._runtime_vars[name] = value
         self._clear_runtime_subfields(name)
-        if isinstance(value, dict):
-            for field_name, field_value in value.items():
-                self._runtime_vars[f"{name}.{field_name}"] = field_value
-        elif isinstance(value, (list, tuple)) and len(value) >= 2:
-            self._runtime_vars[f"{name}.x"] = value[0]
-            self._runtime_vars[f"{name}.y"] = value[1]
+        self._set_runtime_subfields(name, value)
 
     @staticmethod
     def _parse_literal_value(raw_value):
@@ -1368,17 +1379,38 @@ class TaskExecutor:
         if key in self._runtime_vars:
             return self._runtime_vars[key]
 
+        def _resolve_nested(value, parts):
+            current = value
+            for part in parts:
+                if isinstance(current, dict):
+                    if part not in current:
+                        return None
+                    current = current.get(part)
+                    continue
+                if isinstance(current, (list, tuple)) and part.isdigit():
+                    index = int(part)
+                    if index < 0 or index >= len(current):
+                        return None
+                    current = current[index]
+                    continue
+                return None
+            return current
+
         if "." in key:
-            base, sub = key.split(".", 1)
+            parts = key.split(".")
+            base = parts[0]
+            remainder = parts[1:]
             if base in self._runtime_vars:
-                value = self._runtime_vars[base]
-                if isinstance(value, dict) and sub in value:
-                    return value[sub]
+                resolved = _resolve_nested(self._runtime_vars[base], remainder)
+                if resolved is not None:
+                    return resolved
             if self._current_task:
                 param = self._current_task.get_param(base)
-                if param and isinstance(param.value, dict) and sub in param.value:
-                    return param.value[sub]
-                if param and param.param_type == "image" and sub == "path":
+                if param:
+                    resolved = _resolve_nested(param.value, remainder)
+                    if resolved is not None:
+                        return resolved
+                if param and param.param_type == "image" and len(remainder) == 1 and remainder[0] == "path":
                     return param.value
             return None
 
@@ -2417,10 +2449,11 @@ class TaskExecutor:
                 self._log(f"[AI地块] 复检结果: {review_display}({review_confidence:.3f})")
 
         attribute_parts = []
-        for task_slug, display_name in (("level", "等级"), ("resource_type", "类型"), ("relation", "关系")):
-            display_value = getattr(chosen, f"{task_slug}_display", "") or getattr(chosen, task_slug, "")
+        for entry in chosen.iter_attribute_results():
+            display_name = str(entry.get("display_name") or entry.get("task_slug") or "属性").strip()
+            display_value = str(entry.get("display") or entry.get("value") or "").strip()
             if display_value:
-                confidence_value = getattr(chosen, f"{task_slug}_confidence", None)
+                confidence_value = entry.get("confidence")
                 if confidence_value is None:
                     attribute_parts.append(f"{display_name}={display_value}")
                 else:
@@ -3211,19 +3244,66 @@ class TaskExecutor:
         return bool(value)
 
     @staticmethod
+    def _iter_ai_tile_region_attribute_entries(region: dict) -> List[dict]:
+        attribute_results = region.get("attribute_results")
+        attribute_order = region.get("attribute_order")
+        entries: List[dict] = []
+        seen: set[str] = set()
+
+        if isinstance(attribute_results, dict):
+            candidate_slugs: List[str] = []
+            if isinstance(attribute_order, (list, tuple)):
+                candidate_slugs.extend(str(item).strip() for item in attribute_order if str(item).strip())
+            candidate_slugs.extend(str(item).strip() for item in attribute_results.keys() if str(item).strip())
+            for task_slug in candidate_slugs:
+                if not task_slug or task_slug in seen:
+                    continue
+                seen.add(task_slug)
+                entry = attribute_results.get(task_slug)
+                if not isinstance(entry, dict):
+                    continue
+                display_value = str(entry.get("display") or entry.get("value") or "").strip()
+                if not display_value:
+                    continue
+                entries.append(
+                    {
+                        "task_slug": task_slug,
+                        "display_name": str(entry.get("display_name") or task_slug).strip() or task_slug,
+                        "display": display_value,
+                        "confidence": entry.get("confidence"),
+                    }
+                )
+
+        if entries:
+            return entries
+
+        for task_slug, display_name in (("level", "等级"), ("resource_type", "类型"), ("relation", "关系")):
+            display_value = str(region.get(f"{task_slug}_display") or region.get(task_slug) or "").strip()
+            if not display_value:
+                continue
+            entries.append(
+                {
+                    "task_slug": task_slug,
+                    "display_name": display_name,
+                    "display": display_value,
+                    "confidence": region.get(f"{task_slug}_confidence"),
+                }
+            )
+        return entries
+
+    @staticmethod
     def _build_ai_highlight_overlay_text(region: dict) -> str:
         if str(region.get("recognition_type") or "") != "ai_tile":
             return ""
 
         parts = []
-        for display_key, fallback_key in (
-            ("level_display", "level"),
-            ("resource_type_display", "resource_type"),
-            ("relation_display", "relation"),
-        ):
-            value = str(region.get(display_key) or region.get(fallback_key) or "").strip()
-            if value:
-                parts.append(value)
+        for entry in TaskExecutor._iter_ai_tile_region_attribute_entries(region):
+            display_name = str(entry.get("display_name") or entry.get("task_slug") or "属性").strip()
+            display_value = str(entry.get("display") or "").strip()
+            if display_value:
+                parts.append(f"{display_name}={display_value}")
+        if len(parts) > 3:
+            parts = parts[:3] + ["..."]
         return " / ".join(parts)
 
     def _action_highlight_match(self, action_data: Optional[dict] = None):

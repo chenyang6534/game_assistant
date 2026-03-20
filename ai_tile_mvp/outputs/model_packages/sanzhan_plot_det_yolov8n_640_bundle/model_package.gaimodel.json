@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-03-20T17:26:50",
+  "project_name": "sanzhan_plot",
+  "project_slug": "sanzhan_plot",
+  "project_meta": "project_meta.json",
+  "detector_model": "models/detector/sanzhan_plot_det_yolov8n_640.onnx",
+  "detector_meta": "models/detector/sanzhan_plot_det_yolov8n_640.json",
+  "attribute_tasks": [
+    "level",
+    "resource_type",
+    "relation"
+  ],
+  "review_task": "candidate_review"
+}
