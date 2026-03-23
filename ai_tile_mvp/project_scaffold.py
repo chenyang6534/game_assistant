@@ -410,6 +410,14 @@ def _get_benchmark_script_name(project_meta: dict[str, Any]) -> str:
     return f"{6 + len(project_meta['attribute_tasks']) * 2:02d}_benchmark.cmd"
 
 
+def _get_threshold_scan_script_name(project_meta: dict[str, Any]) -> str:
+    return f"{7 + len(project_meta['attribute_tasks']) * 2:02d}_scan_thresholds.cmd"
+
+
+def _get_detection_experiment_script_name(project_meta: dict[str, Any]) -> str:
+    return f"{8 + len(project_meta['attribute_tasks']) * 2:02d}_detection_experiments.cmd"
+
+
 def _build_project_readme(project_meta: dict[str, Any]) -> str:
     task_lines = _render_task_summary_lines(project_meta)
     project_name = project_meta["project_name"]
@@ -417,6 +425,8 @@ def _build_project_readme(project_meta: dict[str, Any]) -> str:
     run_name = project_meta["detection_run_name"]
     export_script_name = _get_export_script_name(project_meta)
     benchmark_script_name = _get_benchmark_script_name(project_meta)
+    threshold_scan_script_name = _get_threshold_scan_script_name(project_meta)
+    detection_experiment_script_name = _get_detection_experiment_script_name(project_meta)
     review_config = get_review_classifier_config(project_meta, default_if_missing=True)
     assert review_config is not None
     review_task_slug = str(review_config["task_slug"])
@@ -464,7 +474,9 @@ def _build_project_readme(project_meta: dict[str, Any]) -> str:
             "8. 运行 scripts/04_train_detection.cmd",
             f"9. 运行 scripts/{export_script_name}",
             f"10. 运行 scripts/{benchmark_script_name}",
-            f"11. 如果要启用候选框复检，额外训练一个 {review_task_slug} 二分类模型并放到 outputs/train_attr 下",
+            f"11. 运行 scripts/{threshold_scan_script_name}，先扫 detection conf 和 review threshold",
+            f"12. 如要比较 YOLOv8n/YOLOv8s 与 640/768，运行 scripts/{detection_experiment_script_name}",
+            f"13. 如果要启用候选框复检，额外训练一个 {review_task_slug} 二分类模型并放到 outputs/train_attr 下",
             "",
             "## AnyLabeling 使用要点",
             "",
@@ -684,6 +696,8 @@ def _build_wrapper_files(project_meta: dict[str, Any]) -> dict[str, str]:
 
     export_script_name = _get_export_script_name(project_meta)
     benchmark_script_name = _get_benchmark_script_name(project_meta)
+    threshold_scan_script_name = _get_threshold_scan_script_name(project_meta)
+    detection_experiment_script_name = _get_detection_experiment_script_name(project_meta)
     wrapper_files[f"scripts/{export_script_name}"] = _build_command_wrapper(
         f'python "%AI_ROOT%\\scripts\\export_yolo_onnx.py" --weights "%PROJECT_ROOT%\\outputs\\train\\{run_name}\\weights\\best.pt" --output "%PROJECT_ROOT%\\models\\detector\\{run_name}_640.onnx" --meta-template "%PROJECT_ROOT%\\configs\\model_meta.template.json"'
     )
@@ -692,6 +706,12 @@ def _build_wrapper_files(project_meta: dict[str, Any]) -> dict[str, str]:
     )
     wrapper_files[f"scripts/{benchmark_script_name}"] = _build_command_wrapper(
         f'python "%AI_ROOT%\\scripts\\benchmark_onnx_tile.py" --model "%PROJECT_ROOT%\\models\\detector\\{run_name}_640.onnx" --image-dir "%PROJECT_ROOT%\\datasets\\detection\\images\\test" --label-dir "%PROJECT_ROOT%\\datasets\\detection\\labels\\test" --output-dir "%PROJECT_ROOT%\\outputs\\benchmark_preview"'
+    )
+    wrapper_files[f"scripts/{threshold_scan_script_name}"] = _build_command_wrapper(
+        'python "%AI_ROOT%\\scripts\\scan_ai_tile_thresholds.py" --project-config "%PROJECT_ROOT%\\project_meta.json"'
+    )
+    wrapper_files[f"scripts/{detection_experiment_script_name}"] = _build_command_wrapper(
+        'python "%AI_ROOT%\\scripts\\run_detection_experiment_matrix.py" --project-config "%PROJECT_ROOT%\\project_meta.json" --reuse-existing'
     )
 
     return wrapper_files

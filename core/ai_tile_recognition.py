@@ -836,18 +836,23 @@ class AITileRecognition:
         task_runtime: _ReviewTaskRuntime,
         predicted_slug: str,
         confidence: float,
+        review_threshold: float | None = None,
     ) -> bool:
         predicted_display = task_runtime.class_display_map.get(predicted_slug, predicted_slug)
         match.review_label = predicted_slug
         match.review_display = predicted_display
         match.review_confidence = float(confidence)
 
+        active_threshold = task_runtime.confidence_threshold
+        if review_threshold is not None:
+            active_threshold = max(0.0, min(1.0, float(review_threshold)))
+
         normalized = self._normalize_class_token(predicted_slug)
         if normalized in task_runtime.negative_classes:
             match.review_passed = False
             return False
         if normalized in task_runtime.positive_classes:
-            passed = float(confidence) >= float(task_runtime.confidence_threshold)
+            passed = float(confidence) >= float(active_threshold)
             match.review_passed = passed
             return passed
 
@@ -859,8 +864,13 @@ class AITileRecognition:
         image: np.ndarray,
         matches: Sequence[AITileMatchResult],
         resolved_model: Path,
+        *,
+        apply_review: bool = True,
+        review_threshold: float | None = None,
     ) -> List[AITileMatchResult]:
         if not matches:
+            return list(matches)
+        if not apply_review:
             return list(matches)
 
         bundle = self._load_attribute_bundle(resolved_model)
@@ -895,6 +905,7 @@ class AITileRecognition:
                 review_task,
                 predicted_slug,
                 confidence,
+                review_threshold=review_threshold,
             )
             if not passed:
                 kept_indices.discard(result_index)
@@ -991,6 +1002,8 @@ class AITileRecognition:
         threshold: Optional[float] = None,
         roi=None,
         max_count: int = 100,
+        apply_review: bool = True,
+        review_threshold: float | None = None,
     ) -> List[AITileMatchResult]:
         if image is None or getattr(image, "size", 0) == 0:
             self._last_error = "当前没有可用于 AI 地块识别的图像"
@@ -1032,7 +1045,13 @@ class AITileRecognition:
                 )
             )
 
-        results = self._filter_matches_with_review(image, results, resolved_model)
+        results = self._filter_matches_with_review(
+            image,
+            results,
+            resolved_model,
+            apply_review=apply_review,
+            review_threshold=review_threshold,
+        )
         if not results and detections:
             self._last_error = "AI 候选框复检已过滤全部候选框"
 

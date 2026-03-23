@@ -38,7 +38,14 @@
 8. 运行 scripts/04_train_detection.cmd
 9. 运行 scripts/11_export_onnx.cmd
 10. 运行 scripts/12_benchmark.cmd
-11. 如果要启用候选框复检，额外训练一个 candidate_review 二分类模型并放到 outputs/train_attr 下
+11. 运行 scripts/13_scan_thresholds.cmd，先把 detection conf 和 review threshold 扫一轮
+12. 如要比较 YOLOv8n/YOLOv8s 与 640/768，运行 scripts/14_detection_experiments.cmd
+13. 如果要启用候选框复检，额外训练一个 candidate_review 二分类模型并放到 outputs/train_attr 下
+
+## 新增优化入口
+
+- scripts/13_scan_thresholds.cmd: 扫描当前项目检测阈值与候选框复检阈值组合，输出到 outputs/threshold_scan
+- scripts/14_detection_experiments.cmd: 对比 YOLOv8n/YOLOv8s 和 640/768 组合，输出到 outputs/detection_experiments
 
 ## AnyLabeling 使用要点
 

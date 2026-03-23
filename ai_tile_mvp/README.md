@@ -49,6 +49,8 @@
 - 如果你的权重不在这个位置，可以在 project_meta.json 的 review_classifier.weights 里手动指定。
 - “导出”页现在还支持导出自包含模型包；主程序可直接选择导出的 .zip，或包内的 .gaimodel.json 清单，自动挂上同包里的属性模型和候选框复检模型。
 - 工作台现在提供“复检采集”页，左侧图片列表直接读取当前“截图目录”（默认是 detection 原图目录）；同一张图可以连续框多个候选框，点已有框可移动位置、拖四角可调大小，框上会直接显示“未保存 / 正确样本 / 错误样本”状态；左侧图片项会用颜色区分“已存 / 待存”，并标出每张图已存/待存的框数量；右侧也会列出当前图片的全部框，支持按未保存、正确样本、错误样本筛选，点列表项即可快速切换到对应框，也可以直接点“删除选中框”移除当前框；当前激活框可保存到默认的 candidate_review/raw/positive 或 candidate_review/raw/negative；切到别的截图再点回来时，会自动把这张图已保存过的框重新回显出来，方便继续查看和修改；截图列表支持从资源管理器拖图片进来，也支持用 Ctrl+V 或“粘贴剪贴板”导入剪贴板里的图片或图片文件；如果已有 level/resource_type/relation 这类真目标裁剪，还可以在页内直接点“导入已有正确样本”批量复用，并可设置导入数量或随机抽样。
+- scan_ai_tile_thresholds.py 会直接复用主程序 AI 地块识别链路，扫描 detection conf 与 review threshold 组合，并输出 JSON/CSV 排名，适合先把当前模型阈值调准。
+- run_detection_experiment_matrix.py 会串起 train_yolo_tile.py、export_yolo_onnx.py 和离线 benchmark，默认比较 YOLOv8n/YOLOv8s 与 640/768，并把每个组合的最佳 conf、P/R/F1、平均耗时汇总到 outputs/detection_experiments。
 
 如果你只想先验证可行性，推荐先走单目标快测：
 
@@ -161,6 +163,18 @@ python ai_tile_mvp/scripts/export_model_package.py --project-config ai_tile_mvp/
 
 ```powershell
 python ai_tile_mvp/scripts/benchmark_onnx_tile.py --model ai_tile_mvp/models/tile_detector/plot_node_det_yolov8n_640.onnx --image-dir ai_tile_mvp/datasets/plot_det/images/test --label-dir ai_tile_mvp/datasets/plot_det/labels/test --output-dir ai_tile_mvp/outputs/benchmark_preview
+```
+
+阈值扫描：
+
+```powershell
+python ai_tile_mvp/scripts/scan_ai_tile_thresholds.py --project-config ai_tile_mvp/projects/your_project/project_meta.json
+```
+
+检测实验矩阵：
+
+```powershell
+python ai_tile_mvp/scripts/run_detection_experiment_matrix.py --project-config ai_tile_mvp/projects/your_project/project_meta.json --reuse-existing
 ```
 
 ## 当前边界

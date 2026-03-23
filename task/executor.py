@@ -46,6 +46,7 @@ from task.models import (
     normalize_array_items,
 )
 from task.storage import format_persist_json
+from utils.number_utils import coerce_unit_ratio
 
 
 # 当前 hex 网格按 x 列奇偶使用两套邻接规则。
@@ -222,11 +223,7 @@ class TaskExecutor:
 
     @staticmethod
     def _coerce_recognition_roi_ratio(value, default: float) -> float:
-        try:
-            number = float(value)
-        except (TypeError, ValueError):
-            return default
-        return max(0.0, min(1.0, number))
+        return coerce_unit_ratio(value, default)
 
     @staticmethod
     def _intersect_roi(base_roi: Optional[ROI], extra_roi: Optional[ROI]) -> Optional[ROI]:
@@ -4384,11 +4381,7 @@ class TaskExecutor:
 
     @staticmethod
     def _coerce_drag_start_ratio(value, default: float = 0.5) -> float:
-        try:
-            number = float(value)
-        except (TypeError, ValueError):
-            return default
-        return max(0.0, min(1.0, number))
+        return coerce_unit_ratio(value, default)
 
     def _get_screen_size(self):
         width = int(getattr(self._input, "screen_width", 0) or 0)
@@ -4426,11 +4419,7 @@ class TaskExecutor:
 
     @staticmethod
     def _coerce_screen_ratio(value, default: float = 0.5) -> float:
-        try:
-            number = float(value)
-        except (TypeError, ValueError):
-            return default
-        return max(0.0, min(1.0, number))
+        return coerce_unit_ratio(value, default)
 
     def _resolve_highlight_point(self, step: SingleTask, action_data: dict,
                                  action_x: int, action_y: int,

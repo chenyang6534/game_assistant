@@ -1,0 +1,28 @@
+{
+  "project_root": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot",
+  "models": [
+    "yolov8n.pt"
+  ],
+  "imgsz_values": [
+    640
+  ],
+  "rows": [
+    {
+      "model": "yolov8n.pt",
+      "model_stem": "yolov8n",
+      "imgsz": 640,
+      "run_name": "sanzhan_plot_det_yolov8n",
+      "onnx_name": "sanzhan_plot_det_yolov8n_640",
+      "weights_path": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\outputs\\train\\sanzhan_plot_det_yolov8n\\weights\\best.pt",
+      "onnx_path": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\models\\detector\\sanzhan_plot_det_yolov8n_640.onnx",
+      "status": "ok",
+      "best_conf": 0.1,
+      "precision": 0.8095,
+      "recall": 0.85,
+      "f1": 0.8293,
+      "avg_ms": 41.864,
+      "summary_json": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\outputs\\detection_experiments\\benchmark\\sanzhan_plot_det_yolov8n_640\\summary.json",
+      "summary_csv": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\outputs\\detection_experiments\\benchmark\\sanzhan_plot_det_yolov8n_640\\summary.csv"
+    }
+  ]
+}
