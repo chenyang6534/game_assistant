@@ -1,4 +1,4 @@
-"""扫描 AI 地块检测阈值与候选框复检阈值组合。"""
+"""扫描 AI 目标检测阈值与候选框复检阈值组合。"""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ from core.ai_tile_recognition import AITileRecognition
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="扫描 AI 地块识别的检测阈值与复检阈值组合")
+    parser = argparse.ArgumentParser(description="扫描 AI 目标识别的检测阈值与复检阈值组合")
     parser.add_argument("--project-config", default="", help="项目 project_meta.json 路径；提供后可自动补全模型与测试集路径")
     parser.add_argument("--model-target", default="", help="AI 模型目标，可传 onnx、zip、.gaimodel.json、project_meta.json 或模型包目录")
     parser.add_argument("--image", default="", help="单张测试图片路径")

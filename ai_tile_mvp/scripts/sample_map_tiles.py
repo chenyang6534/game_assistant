@@ -22,7 +22,7 @@ from core.window import WindowManager
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="采样地图截图用于 AI 地块标注")
+    parser = argparse.ArgumentParser(description="采样地图截图用于 AI 目标标注")
     parser.add_argument("--window-title", default="", help="窗口标题，默认按包含关系匹配")
     parser.add_argument("--window-hwnd", type=int, default=0, help="窗口句柄，优先级高于窗口标题")
     parser.add_argument("--exact", action="store_true", help="是否精确匹配窗口标题")

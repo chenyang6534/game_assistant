@@ -1,4 +1,4 @@
-"""AI 地块项目默认值与路径辅助。"""
+"""AI 目标项目默认值与路径辅助。"""
 
 from __future__ import annotations
 

@@ -10,7 +10,7 @@ if exist "%~dp0..\..\.venv\Scripts\python.exe" (
     set "PYTHON_EXE=python"
 )
 
-echo 启动 AI 地块识别工作台...
+echo 启动 AI 目标识别工作台...
 "%PYTHON_EXE%" workbench.py
 
 if errorlevel 1 (

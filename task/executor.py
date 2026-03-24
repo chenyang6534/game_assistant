@@ -42,8 +42,10 @@ from task.models import (
     normalize_recognition_roi_mode,
     normalize_remove_coord_mode,
     normalize_drag_vector_mode,
+    normalize_recognition_type,
     normalize_recognition_target_mode,
     normalize_array_items,
+    is_ai_target_recognition_type,
 )
 from task.storage import format_persist_json
 from utils.number_utils import coerce_unit_ratio
@@ -349,7 +351,14 @@ class TaskExecutor:
         return [dict(region) for region in (self._last_recognition_regions or [])]
 
     def _clear_last_recognition_runtime_vars(self):
-        for name in ("last_recognition_result", "last_recognition_results", "ai_tile_result", "ai_tile_results"):
+        for name in (
+            "last_recognition_result",
+            "last_recognition_results",
+            "ai_target_result",
+            "ai_target_results",
+            "ai_tile_result",
+            "ai_tile_results",
+        ):
             self._runtime_vars.pop(name, None)
             self._clear_runtime_subfields(name)
 
@@ -363,7 +372,9 @@ class TaskExecutor:
         self._set_runtime_var("last_recognition_result", current_region)
         self._set_runtime_var("last_recognition_results", all_regions)
 
-        if str(current_region.get("recognition_type") or "") == "ai_tile":
+        if is_ai_target_recognition_type(current_region.get("recognition_type") or ""):
+            self._set_runtime_var("ai_target_result", current_region)
+            self._set_runtime_var("ai_target_results", all_regions)
             self._set_runtime_var("ai_tile_result", current_region)
             self._set_runtime_var("ai_tile_results", all_regions)
 
@@ -1751,14 +1762,15 @@ class TaskExecutor:
         resolved_input_text = self._resolve_params(step.input_text)
         resolved_press_keys = self._resolve_params(step.press_keys)
 
+        normalized_recognition_type = normalize_recognition_type(step.recognition_type)
         rec_type_names = {
-            'text': '文字', 'image': '图像', 'ai_tile': 'AI地块',
+            'text': '文字', 'image': '图像', 'ai_target': 'AI目标', 'ai_tile': 'AI目标',
             'multi_image': '多图像(动画帧)', 'none': '无',
         }
-        rec_name = rec_type_names.get(step.recognition_type, step.recognition_type)
+        rec_name = rec_type_names.get(normalized_recognition_type, normalized_recognition_type)
         sname = self._display_name(step, step_index)
         target_text = self._format_recognition_target_log(resolved_target, target_mode)
-        if step.recognition_type == "ai_tile" and not target_text:
+        if is_ai_target_recognition_type(normalized_recognition_type) and not target_text:
             target_text = "(默认AI模型)"
         self._log(f"执行步骤 [{step_index + 1}] {sname}: "
                f"{rec_name}识别 -> {target_text or '(直接执行)'}")
@@ -2339,28 +2351,29 @@ class TaskExecutor:
             return None
 
     def _recognize_single_target(self, step: SingleTask, img, target: Any, recognition_roi: Optional[ROI] = None):
-        if step.recognition_type == "text":
+        recognition_type = normalize_recognition_type(step.recognition_type)
+        if recognition_type == "text":
             return self._recognize_text(step, img, "" if target is None else str(target), recognition_roi)
-        if step.recognition_type == "image":
+        if recognition_type == "image":
             return self._recognize_image(step, img, "" if target is None else str(target), recognition_roi)
-        if step.recognition_type == "ai_tile":
+        if is_ai_target_recognition_type(recognition_type):
             return self._recognize_ai_tile(step, img, "" if target is None else str(target), recognition_roi)
-        if step.recognition_type == "multi_image":
+        if recognition_type == "multi_image":
             return self._recognize_multi_image(step, img, "" if target is None else str(target), recognition_roi)
-        if step.recognition_type == "none":
+        if recognition_type == "none":
             return (0, 0, 0, 0)
-        self._log(f"未知的识别类型: {step.recognition_type}")
+        self._log(f"未知的识别类型: {recognition_type}")
         return None
 
     def _recognize_ai_tile(self, step: SingleTask, img, target: str, recognition_roi: Optional[ROI] = None):
         if not self._ai_tile_recognition:
-            self._log("AI 地块识别模块不可用")
+            self._log("AI 目标识别模块不可用")
             self._set_last_recognition_metrics(
                 None,
                 step.recognition_threshold,
                 False,
-                source="AI地块",
-                note="AI 地块识别模块未初始化",
+                source="AI目标",
+                note="AI 目标识别模块未初始化",
             )
             return None
 
@@ -2381,20 +2394,20 @@ class TaskExecutor:
         )
         initial_attribute_notice = self._ai_tile_recognition.get_last_attribute_notice().strip()
         if initial_attribute_notice:
-            self._log(f"[AI地块] {initial_attribute_notice}")
+            self._log(f"[AI目标] {initial_attribute_notice}")
         if not results:
-            note = self._ai_tile_recognition.get_last_error() or "未检测到地块"
+            note = self._ai_tile_recognition.get_last_error() or "未检测到目标"
             self._set_last_recognition_metrics(
                 None,
                 step.recognition_threshold,
                 False,
-                source=f"AI地块[{model_label}]",
+                source=f"AI目标[{model_label}]",
                 note=note,
             )
             return None
 
         results.sort(key=lambda item: (item.center[1], item.center[0]))
-        self._log(f"[AI地块] 找到 {len(results)} 个候选，需要第 {match_index} 个")
+        self._log(f"[AI目标] 找到 {len(results)} 个候选，需要第 {match_index} 个")
 
         if match_index > len(results):
             best_confidence = max((item.confidence for item in results), default=None)
@@ -2402,10 +2415,10 @@ class TaskExecutor:
                 best_confidence,
                 step.recognition_threshold,
                 False,
-                source=f"AI地块[{model_label}]",
-                note=f"只找到 {len(results)} 个满足阈值的地块，目标第 {match_index} 个",
+                source=f"AI目标[{model_label}]",
+                note=f"只找到 {len(results)} 个满足阈值的目标，目标第 {match_index} 个",
             )
-            self._log(f"需要第 {match_index} 个 AI 地块结果，但只找到 {len(results)} 个")
+            self._log(f"需要第 {match_index} 个 AI 目标结果，但只找到 {len(results)} 个")
             return None
 
         results = self._ai_tile_recognition.enrich_tiles(
@@ -2420,30 +2433,30 @@ class TaskExecutor:
             if initial_attribute_notice and post_enrich_notice.startswith(f"{initial_attribute_notice}；"):
                 delta_notice = post_enrich_notice[len(initial_attribute_notice) + 1 :].strip()
                 if delta_notice:
-                    self._log(f"[AI地块] {delta_notice}")
+                    self._log(f"[AI目标] {delta_notice}")
             else:
-                self._log(f"[AI地块] {post_enrich_notice}")
+                self._log(f"[AI目标] {post_enrich_notice}")
         chosen = results[match_index - 1]
         note = f"使用第 {match_index} 个检测结果" if match_index > 1 else ""
         self._set_last_recognition_metrics(
             chosen.confidence,
             step.recognition_threshold,
             True,
-            source=f"AI地块[{model_label}]",
+            source=f"AI目标[{model_label}]",
             note=note,
         )
 
         self._log(
-            f"[AI地块] 选择结果: 置信度={chosen.confidence:.3f}, "
+            f"[AI目标] 选择结果: 置信度={chosen.confidence:.3f}, "
             f"中心(相对)={self._format_client_relative_point(chosen.center[0], chosen.center[1], client_size=(img.shape[1], img.shape[0]))}"
         )
         if chosen.review_label:
             review_display = chosen.review_display or chosen.review_label
             review_confidence = chosen.review_confidence
             if review_confidence is None:
-                self._log(f"[AI地块] 复检结果: {review_display}")
+                self._log(f"[AI目标] 复检结果: {review_display}")
             else:
-                self._log(f"[AI地块] 复检结果: {review_display}({review_confidence:.3f})")
+                self._log(f"[AI目标] 复检结果: {review_display}({review_confidence:.3f})")
 
         attribute_parts = []
         for entry in chosen.iter_attribute_results():
@@ -2456,21 +2469,21 @@ class TaskExecutor:
                 else:
                     attribute_parts.append(f"{display_name}={display_value}({confidence_value:.3f})")
         if attribute_parts:
-            self._log(f"[AI地块] 属性结果: {'，'.join(attribute_parts)}")
+            self._log(f"[AI目标] 属性结果: {'，'.join(attribute_parts)}")
 
         if getattr(step, "has_multiple_matches", False):
             self._set_last_recognition_regions(
-                [dict(result.to_region_dict(), recognition_type="ai_tile") for result in results],
+                [dict(result.to_region_dict(), recognition_type="ai_target") for result in results],
                 selected_index=match_index - 1,
             )
         else:
-            chosen_region = dict(chosen.to_region_dict(), recognition_type="ai_tile")
+            chosen_region = dict(chosen.to_region_dict(), recognition_type="ai_target")
             self._set_last_recognition_region(
                 chosen.x,
                 chosen.y,
                 chosen.width,
                 chosen.height,
-                recognition_type="ai_tile",
+                recognition_type="ai_target",
                 label=chosen.label,
                 extra_fields=chosen_region,
             )
@@ -3290,7 +3303,7 @@ class TaskExecutor:
 
     @staticmethod
     def _build_ai_highlight_overlay_text(region: dict) -> str:
-        if str(region.get("recognition_type") or "") != "ai_tile":
+        if not is_ai_target_recognition_type(region.get("recognition_type") or ""):
             return ""
 
         parts = []

@@ -1,4 +1,4 @@
-"""可选的 AI 地块识别封装。"""
+"""可选的 AI 目标识别封装。"""
 
 from __future__ import annotations
 
@@ -477,7 +477,7 @@ class AITileRecognition:
         try:
             from ai_tile_mvp.runtime.onnx_tile_detector import OnnxTileDetector
         except Exception as exc:  # pragma: no cover - 依赖缺失时由运行日志提示
-            self._init_error = f"AI 地块识别依赖不可用: {exc}"
+            self._init_error = f"AI 目标识别依赖不可用: {exc}"
             return None
         return OnnxTileDetector
 
@@ -485,7 +485,7 @@ class AITileRecognition:
         try:
             from ultralytics import YOLO
         except Exception as exc:  # pragma: no cover - 依赖缺失时由运行日志提示
-            self._append_attribute_notice(f"AI 地块属性分类依赖不可用: {exc}")
+            self._append_attribute_notice(f"AI 目标属性分类依赖不可用: {exc}")
             return None
         return YOLO
 
@@ -585,7 +585,7 @@ class AITileRecognition:
             self._last_error = resolve_error
             return None, resolved_model
         if not resolved_model.exists():
-            self._last_error = f"AI 地块模型不存在: {resolved_model}"
+            self._last_error = f"AI 目标模型不存在: {resolved_model}"
             return None, resolved_model
 
         cache_key = str(resolved_model)
@@ -602,7 +602,7 @@ class AITileRecognition:
             try:
                 detector = detector_class(resolved_model, meta_path=meta_path if meta_path.exists() else None)
             except Exception as exc:
-                self._last_error = f"加载 AI 地块模型失败: {exc}"
+                self._last_error = f"加载 AI 目标模型失败: {exc}"
                 return None, resolved_model
 
             self._detector_cache[cache_key] = detector
@@ -719,7 +719,7 @@ class AITileRecognition:
             warmup_image = np.zeros((input_size, input_size, 3), dtype=np.uint8)
             detector.predict(warmup_image, max_detections=1)
         except Exception as exc:
-            return False, False, f"AI 地块检测模型预热失败: {exc}"
+            return False, False, f"AI 目标检测模型预热失败: {exc}"
 
         bundle = self._load_attribute_bundle(resolved_model)
         if bundle is not None:
@@ -734,7 +734,7 @@ class AITileRecognition:
                     except TypeError:
                         model.predict(source=[warmup_crop], verbose=False)
                 except Exception as exc:
-                    return False, False, f"AI 地块属性模型预热失败({task_runtime.display_name}): {exc}"
+                    return False, False, f"AI 目标属性模型预热失败({task_runtime.display_name}): {exc}"
 
         with self._cache_lock:
             self._warmed_model_paths.add(cache_key)
@@ -1006,7 +1006,7 @@ class AITileRecognition:
         review_threshold: float | None = None,
     ) -> List[AITileMatchResult]:
         if image is None or getattr(image, "size", 0) == 0:
-            self._last_error = "当前没有可用于 AI 地块识别的图像"
+            self._last_error = "当前没有可用于 AI 目标识别的图像"
             return []
 
         detector, resolved_model = self._get_detector(model_path)
@@ -1028,7 +1028,7 @@ class AITileRecognition:
                 max_detections=max_count,
             )
         except Exception as exc:
-            self._last_error = f"AI 地块识别推理失败: {exc}"
+            self._last_error = f"AI 目标识别推理失败: {exc}"
             return []
 
         results: List[AITileMatchResult] = []

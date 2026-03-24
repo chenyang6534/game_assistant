@@ -67,7 +67,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="交互式地图采样向导")
     parser.parse_args()
 
-    print("=== AI 地块采样向导 ===")
+    print("=== AI 目标采样向导 ===")
     window_title = choose_window()
     count = ask_int("采样张数", 300)
     interval = ask_float("采样间隔秒数", 1.2)

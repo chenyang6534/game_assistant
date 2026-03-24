@@ -10,7 +10,7 @@ if exist "%~dp0..\..\.venv\Scripts\python.exe" (
     set "PYTHON_EXE=python"
 )
 
-echo 启动 AI 地块采样向导...
+echo 启动 AI 目标采样向导...
 "%PYTHON_EXE%" scripts\sample_map_tiles_interactive.py
 
 if errorlevel 1 (

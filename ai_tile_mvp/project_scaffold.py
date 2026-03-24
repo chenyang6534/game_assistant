@@ -71,7 +71,7 @@ DEFAULT_REVIEW_THRESHOLD = 0.75
 DEFAULT_REVIEW_POSITIVE_CLASS = {
     "display_name": "正确样本",
     "slug": "positive",
-    "aliases": ["positive", "correct", "true", "target", "tile", "node", "plot", "目标", "地块"],
+    "aliases": ["positive", "correct", "true", "target", "object", "entity", "mob", "monster", "tile", "node", "plot", "目标", "对象", "实体", "地块"],
 }
 DEFAULT_REVIEW_NEGATIVE_CLASS = {
     "display_name": "错误样本",
@@ -83,10 +83,14 @@ DEFAULT_REVIEW_NEGATIVE_CLASS = {
         "background",
         "bg",
         "other",
+        "non_target",
+        "not_target",
+        "non_object",
         "not_plot",
         "notplot",
         "误检",
         "背景",
+        "非目标",
         "非地块",
     ],
 }
@@ -511,7 +515,7 @@ def _build_project_checklist(project_meta: dict[str, Any]) -> str:
             "## 1. 检测类",
             "",
             f"- 只标 1 个检测类: {detection_label}",
-            "- 框里要包含完整菱形主体，不要只框数字",
+            "- 框里要包含完整目标主体，不要只框局部特征",
             "",
             "## 2. 当前属性定义",
             "",
@@ -520,8 +524,8 @@ def _build_project_checklist(project_meta: dict[str, Any]) -> str:
             "## 3. 困难负样本",
             "",
             "- 不要给树林、乱石、道路纹理这类假目标单独画负类框",
-            "- 正确做法是保留整张图，只标真地块；如果整张图都没有目标，也保存空 JSON",
-            "- 这些图在同步后会生成空 txt 或只含真地块的 txt，可直接作为困难负样本参与训练",
+            "- 正确做法是保留整张图，只标真目标；如果整张图都没有目标，也保存空 JSON",
+            "- 这些图在同步后会生成空 txt 或只含真目标的 txt，可直接作为困难负样本参与训练",
             "",
             "## 4. 固定路径",
             "",

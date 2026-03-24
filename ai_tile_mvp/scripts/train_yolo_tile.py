@@ -50,7 +50,7 @@ def install_ultralytics_checkpoint_retry_patch() -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="训练 AI 地块检测模型")
+    parser = argparse.ArgumentParser(description="训练 AI 目标检测模型")
     parser.add_argument("--data", default=str(AI_ROOT / "datasets" / "plot_det" / "data.yaml"), help="data.yaml 路径")
     parser.add_argument("--model", default="yolov8n.pt", help="基础模型名称或权重路径")
     parser.add_argument("--imgsz", type=int, default=640, help="训练输入尺寸")

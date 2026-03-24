@@ -59,6 +59,7 @@ from task.models import (
     ARRAY_ITEM_TYPE_LABELS,
     GRID_MODE_LABELS,
     IMAGE_MATCH_MODE_LABELS,
+    is_ai_target_recognition_type,
     PlanTask,
     RECOGNITION_ROI_MODE_LABELS,
     RECOGNITION_TARGET_MODE_LABELS,
@@ -91,6 +92,7 @@ from task.models import (
     normalize_remove_coord_mode,
     normalize_drag_vector_mode,
     normalize_image_match_mode,
+    normalize_recognition_type,
     normalize_recognition_roi_mode,
     normalize_recognition_target_mode,
     normalize_array_items,
@@ -901,14 +903,16 @@ def _is_image_array_param(param: Optional[TaskParameter]) -> bool:
 
 
 def _is_ai_tile_recognition_type(recognition_type: str) -> bool:
-    return recognition_type == "ai_tile"
+    return is_ai_target_recognition_type(recognition_type)
 
 
 def _is_image_like_recognition_type(recognition_type: str) -> bool:
-    return recognition_type in ("image", "multi_image", "ai_tile")
+    resolved_type = normalize_recognition_type(recognition_type)
+    return resolved_type in ("image", "multi_image") or is_ai_target_recognition_type(resolved_type)
 
 
 def _get_recognition_target_candidates(task_params: List[TaskParameter], recognition_type: str) -> List[TaskParameter]:
+    recognition_type = normalize_recognition_type(recognition_type)
     candidates = []
     for param in task_params:
         array_item_type = _get_array_item_type(param)
@@ -917,7 +921,7 @@ def _get_recognition_target_candidates(task_params: List[TaskParameter], recogni
                 candidates.append(param)
             elif param.param_type == "array" and array_item_type in ("image", "string"):
                 candidates.append(param)
-        elif recognition_type == "ai_tile":
+        elif is_ai_target_recognition_type(recognition_type):
             if param.param_type in ("image", "text"):
                 candidates.append(param)
         elif recognition_type == "text":
@@ -1023,7 +1027,12 @@ def _get_step_display_info(task_steps: List[SingleTask], target_id: str) -> Opti
 def _format_step_brief_text(step: SingleTask, index: int, task_steps: Optional[List[SingleTask]] = None,
                             include_step_id: bool = False, expand_jump_target: bool = True) -> str:
     rec_type_names = {
-        "text": "文字", "image": "图像", "multi_image": "多图像(动画帧)", "ai_tile": "AI地块", "none": "无",
+        "text": "文字",
+        "image": "图像",
+        "multi_image": "多图像(动画帧)",
+        "ai_target": "AI目标",
+        "ai_tile": "AI目标",
+        "none": "无",
     }
     rec_type = rec_type_names.get(step.recognition_type, step.recognition_type)
     image_match_mode = normalize_image_match_mode(getattr(step, "image_match_mode", "template"))
@@ -1646,7 +1655,7 @@ class LoopStepEditDialog(QDialog):
 
         # 说明文字
         info_label = QLabel(
-            "• 遍历数组：可选择数组参数，也可手输运行时数组名，例如 ai_tile_results\n"
+            "• 遍历数组：可选择数组参数，也可手输运行时数组名，例如 ai_target_results\n"
             "• 元素变量：可选择已有变量，也可手输一个临时运行时变量名，例如 tile\n"
             "• 字典型元素可以用 {变量名.字段名} 访问成员，坐标数组仍可用 {变量名.x} 和 {变量名.y}"
         )
@@ -1655,7 +1664,7 @@ class LoopStepEditDialog(QDialog):
         form.addRow("", info_label)
 
         if self._loop_array_combo.lineEdit() is not None:
-            self._loop_array_combo.lineEdit().setPlaceholderText("数组参数或运行时数组名，例如 ai_tile_results")
+            self._loop_array_combo.lineEdit().setPlaceholderText("数组参数或运行时数组名，例如 ai_target_results")
         if self._loop_var_combo.lineEdit() is not None:
             self._loop_var_combo.lineEdit().setPlaceholderText("元素变量名，例如 tile")
 
@@ -1803,7 +1812,7 @@ class StepEditDialog(QDialog):
         # 识别类型
         self._recognition_type = QComboBox()
         self._recognition_type.addItem("图像识别 (模板匹配)", "image")
-        self._recognition_type.addItem("AI 地块识别", "ai_tile")
+        self._recognition_type.addItem("AI 目标识别", "ai_target")
         self._recognition_type.addItem("文字识别 (OCR)", "text")
         self._recognition_type.addItem("多图像识别 (动画帧/任一匹配)", "multi_image")
         self._recognition_type.addItem("无识别 (直接执行)", "none")
@@ -1847,10 +1856,10 @@ class StepEditDialog(QDialog):
         form.addRow("识别目标:", target_layout)
 
         self._ai_tile_usage_hint = QLabel(
-            "AI 地块识别成功后会自动写入运行时变量：{ai_tile_result.<属性slug>}、"
-            "{ai_tile_result.<属性slug>_display}、{ai_tile_result.<属性slug>_confidence}；"
-            "也可以读取 {ai_tile_result.attribute_results.<属性slug>.display} 这类通用字段。"
-            "如勾选“此图像有多个匹配”，还会写入数组 ai_tile_results。"
+            "AI 目标识别成功后会自动写入运行时变量：{ai_target_result.<属性slug>}、"
+            "{ai_target_result.<属性slug>_display}、{ai_target_result.<属性slug>_confidence}；"
+            "也可以读取 {ai_target_result.attribute_results.<属性slug>.display} 这类通用字段。"
+            "如勾选“此图像有多个匹配”，还会写入数组 ai_target_results；旧任务仍兼容 ai_tile_result 和 ai_tile_results。"
         )
         self._ai_tile_usage_hint.setWordWrap(True)
         self._ai_tile_usage_hint.setStyleSheet("color: gray;")
@@ -2000,8 +2009,8 @@ class StepEditDialog(QDialog):
         self._highlight_duration_label.setVisible(False)
         self._highlight_duration_spin.setVisible(False)
 
-        self._highlight_show_ai_attributes = QCheckBox("在红框旁显示 AI 地块属性")
-        self._highlight_show_ai_attributes.setToolTip("仅对 AI 地块识别结果生效，显示等级、类型和关系")
+        self._highlight_show_ai_attributes = QCheckBox("在红框旁显示 AI 目标属性")
+        self._highlight_show_ai_attributes.setToolTip("仅对 AI 目标识别结果生效，显示等级、类型和关系")
         self._highlight_show_ai_attributes_label = QLabel("AI属性显示:")
         form.addRow(self._highlight_show_ai_attributes_label, self._highlight_show_ai_attributes)
         self._highlight_show_ai_attributes_label.setVisible(False)
@@ -3114,7 +3123,7 @@ class StepEditDialog(QDialog):
 
     def _on_type_changed(self, index):
         """识别类型变更"""
-        recognition_type = self._recognition_type.currentData()
+        recognition_type = normalize_recognition_type(self._recognition_type.currentData())
         is_image = recognition_type == "image"
         is_multi_image = recognition_type == "multi_image"
         is_ai_tile = _is_ai_tile_recognition_type(recognition_type)
@@ -3151,9 +3160,9 @@ class StepEditDialog(QDialog):
             self._browse_btn.setText("浏览...")
         elif is_ai_tile:
             _set_combo_data(self._target_mode_combo, "single")
-            self._target_edit.setPlaceholderText("可选：指定 onnx、.gaimodel.json 或 .zip 模型包；留空则使用 models/tile_detector 下最新 onnx 模型")
+            self._target_edit.setPlaceholderText("可选：指定 onnx、.gaimodel.json 或 .zip 模型包；留空则使用 models/tile_detector 下最新目标检测 onnx 模型")
             self._threshold_spin.setValue(0.35)
-            self._threshold_spin.setToolTip("AI 地块识别的最低置信度，建议 0.25-0.5；值越低召回越高，但误检也会增加")
+            self._threshold_spin.setToolTip("AI 目标识别的最低置信度，建议 0.25-0.5；值越低召回越高，但误检也会增加")
             self._target_edit.setToolTip("可直接选择项目内 detector onnx，或导出的 .zip / .gaimodel.json 模型包；主程序会自动解压并加载同包内的属性模型和候选框复检模型")
             self._browse_btn.setText("选择模型/模型包...")
         elif is_multi_image:
@@ -3180,12 +3189,13 @@ class StepEditDialog(QDialog):
 
     def _browse_target_param(self):
         """从参数选择识别目标"""
-        recognition_type = self._recognition_type.currentData()
+        recognition_type = normalize_recognition_type(self._recognition_type.currentData())
         candidate_names = {param.name for param in _get_recognition_target_candidates(self._task_params, recognition_type)}
         type_name = {
             "image": "图像",
             "multi_image": "多图像",
-            "ai_tile": "AI 地块",
+            "ai_target": "AI 目标",
+            "ai_tile": "AI 目标",
             "text": "文字",
         }.get(recognition_type, "当前")
         param = _pick_task_param(
@@ -3234,13 +3244,13 @@ class StepEditDialog(QDialog):
     
     def _browse_template(self):
         """浏览模板图片，自动复制到 pic/ 目录并存储相对路径"""
-        recognition_type = self._recognition_type.currentData()
+        recognition_type = normalize_recognition_type(self._recognition_type.currentData())
         is_multi = recognition_type == "multi_image"
 
-        if recognition_type == "ai_tile":
+        if _is_ai_tile_recognition_type(recognition_type):
             filepath, _ = QFileDialog.getOpenFileName(
                 self,
-                "选择 AI 地块模型或模型包（支持 ZIP）",
+                "选择 AI 目标模型或模型包（支持 ZIP）",
                 "",
                 "AI 模型/模型包 (*.onnx *.gaimodel.json *.zip);;ZIP 模型包 (*.zip);;模型包清单 (*.gaimodel.json);;ONNX 模型 (*.onnx);;所有文件 (*.*)"
             )
@@ -4643,7 +4653,7 @@ class StructEditDialog(QDialog):
         form = QFormLayout()
 
         self._name_edit = QLineEdit()
-        self._name_edit.setPlaceholderText("例如：地块信息")
+        self._name_edit.setPlaceholderText("例如：目标信息")
         form.addRow("结构体名:", self._name_edit)
         layout.addLayout(form)
 
@@ -5458,8 +5468,8 @@ class MainActionEditDialog(QDialog):
         self._highlight_duration_label = QLabel("标记时长:")
         form.addRow(self._highlight_duration_label, self._highlight_duration_spin)
 
-        self._highlight_show_ai_attributes = QCheckBox("在红框旁显示 AI 地块属性")
-        self._highlight_show_ai_attributes.setToolTip("仅对 AI 地块识别结果生效，显示等级、类型和关系")
+        self._highlight_show_ai_attributes = QCheckBox("在红框旁显示 AI 目标属性")
+        self._highlight_show_ai_attributes.setToolTip("仅对 AI 目标识别结果生效，显示等级、类型和关系")
         self._highlight_show_ai_attributes_label = QLabel("AI属性显示:")
         form.addRow(self._highlight_show_ai_attributes_label, self._highlight_show_ai_attributes)
 
@@ -8389,7 +8399,7 @@ class TaskPanel(QWidget):
 
         targets: list[str] = []
         for step in self._iter_task_steps(task.steps):
-            if str(getattr(step, "recognition_type", "") or "") != "ai_tile":
+            if not _is_ai_tile_recognition_type(getattr(step, "recognition_type", "")):
                 continue
 
             raw_target = str(getattr(step, "recognition_target", "") or "").strip()
@@ -8517,7 +8527,7 @@ class TaskPanel(QWidget):
         self._pause_btn.setEnabled(False)
         self._stop_btn.setEnabled(True)
         self._refresh_ai_warmup_status(task)
-        self._append_log("[AI地块] 正在后台预热模型，完成后自动开始执行")
+        self._append_log("[AI目标] 正在后台预热模型，完成后自动开始执行")
         return False
 
     def _queue_ai_tile_warmup_for_task(self, task: Optional[PlanTask]) -> None:
@@ -8552,7 +8562,7 @@ class TaskPanel(QWidget):
                 summary = self._ai_tile_recognition.warmup_model_paths(targets)
             except Exception as exc:
                 self._ai_tile_warmup_last_error = str(exc)
-                self._bridge.sig_log.emit(f"[AI地块] 后台 warm-up 失败: {exc}")
+                self._bridge.sig_log.emit(f"[AI目标] 后台 warm-up 失败: {exc}")
                 self._bridge.sig_ai_warmup_tick.emit()
                 continue
 
@@ -8560,9 +8570,9 @@ class TaskPanel(QWidget):
             failed = list(summary.get("failed", []) or [])
             self._ai_tile_warmup_last_error = failed[0] if failed else ""
             if warmed > 0:
-                self._bridge.sig_log.emit(f"[AI地块] 后台 warm-up 完成：已预热 {warmed} 个模型")
+                self._bridge.sig_log.emit(f"[AI目标] 后台 warm-up 完成：已预热 {warmed} 个模型")
             for message in failed[:3]:
-                self._bridge.sig_log.emit(f"[AI地块] 后台 warm-up 失败: {message}")
+                self._bridge.sig_log.emit(f"[AI目标] 后台 warm-up 失败: {message}")
             self._bridge.sig_ai_warmup_tick.emit()
 
     def _init_ui(self):
@@ -9177,7 +9187,7 @@ class TaskPanel(QWidget):
         else:
             # 空闲状态：启动任务并执行到指定步骤
             if self._has_pending_ai_start():
-                self._append_log("[AI地块] 当前已有等待中的自动执行，请等待预热完成或点停止取消")
+                self._append_log("[AI目标] 当前已有等待中的自动执行，请等待预热完成或点停止取消")
                 return
 
             task_id = self._get_selected_task_id()
@@ -9654,7 +9664,7 @@ class TaskPanel(QWidget):
         """执行任务"""
         try:
             if self._has_pending_ai_start():
-                self._append_log("[AI地块] 当前已有等待中的自动执行，请等待预热完成或点停止取消")
+                self._append_log("[AI目标] 当前已有等待中的自动执行，请等待预热完成或点停止取消")
                 return
 
             task_id = self._get_selected_task_id()
@@ -9711,7 +9721,7 @@ class TaskPanel(QWidget):
             # 空闲状态：以单步模式启动任务
             try:
                 if self._has_pending_ai_start():
-                    self._append_log("[AI地块] 当前已有等待中的自动执行，请等待预热完成或点停止取消")
+                    self._append_log("[AI目标] 当前已有等待中的自动执行，请等待预热完成或点停止取消")
                     return
 
                 task_id = self._get_selected_task_id()
@@ -9777,7 +9787,7 @@ class TaskPanel(QWidget):
             mode = self._pending_ai_start_mode or "run"
             step_id = self._pending_ai_start_step_id
             self._clear_pending_ai_start()
-            self._append_log("[AI地块] 后台预热已就绪，开始执行任务")
+            self._append_log("[AI目标] 后台预热已就绪，开始执行任务")
             self._start_task_execution_now(pending_task, mode=mode, step_id=step_id)
             self._refresh_ai_warmup_status(task)
             return

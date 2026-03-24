@@ -26,6 +26,7 @@ class RecognitionType(str, Enum):
     TEXT = "text"                   # OCR 文字识别
     IMAGE = "image"                # 图像模板匹配
     MULTI_IMAGE = "multi_image"    # 多图像识别（任一匹配即成功）
+    AI_TARGET = "ai_target"        # AI 目标识别
     NONE = "none"                  # 无识别，直接执行操作
 
 
@@ -106,6 +107,10 @@ RECOGNITION_ROI_MODE_LABELS = {
     "window_percent": "自定义窗口百分比范围",
 }
 
+RECOGNITION_TYPE_ALIASES = {
+    "ai_tile": RecognitionType.AI_TARGET.value,
+}
+
 GRID_MODE_LABELS = {
     "hex": "六方格",
 }
@@ -126,6 +131,17 @@ def normalize_recognition_target_mode(mode: str) -> str:
     if mode in RECOGNITION_TARGET_MODE_LABELS:
         return mode
     return "single"
+
+
+def normalize_recognition_type(recognition_type: str) -> str:
+    text = str(recognition_type or "").strip()
+    if not text:
+        return RecognitionType.IMAGE.value
+    return RECOGNITION_TYPE_ALIASES.get(text, text)
+
+
+def is_ai_target_recognition_type(recognition_type: str) -> bool:
+    return normalize_recognition_type(recognition_type) == RecognitionType.AI_TARGET.value
 
 
 def normalize_image_match_mode(mode: str) -> str:
@@ -625,6 +641,7 @@ class SingleTask:
     def __post_init__(self):
         if not self.id:
             self.id = uuid.uuid4().hex[:8]
+        self.recognition_type = normalize_recognition_type(self.recognition_type)
         self.recognition_target_mode = normalize_recognition_target_mode(self.recognition_target_mode)
         self.image_match_mode = normalize_image_match_mode(getattr(self, "image_match_mode", "template"))
         self.recognition_roi_mode = normalize_recognition_roi_mode(getattr(self, "recognition_roi_mode", "full_window"))

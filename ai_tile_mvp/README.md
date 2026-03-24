@@ -1,6 +1,6 @@
-# AI 地块识别独立工作区
+# AI 目标识别独立工作区
 
-这个目录用于准备菱形资源点检测、属性分类、导出和离线验证。
+这个目录用于准备 AI 目标检测、属性分类、导出和离线验证。
 
 它和当前主程序是隔离的：
 
@@ -21,7 +21,8 @@
 - scripts: 采样、切分、训练、导出、基准测试脚本
 - workbench.py: 可视化工作台入口
 
-当前这套地块识别默认使用一组独立配置：
+当前这套 AI 目标识别默认使用一组独立配置。
+内部仍沿用部分历史文件名，例如 plot/tile 目录名和 地块识别标注清单.md：
 
 - configs/plot_label_classes.txt
 - configs/plot_node_attributes.json
@@ -49,7 +50,7 @@
 - 如果你的权重不在这个位置，可以在 project_meta.json 的 review_classifier.weights 里手动指定。
 - “导出”页现在还支持导出自包含模型包；主程序可直接选择导出的 .zip，或包内的 .gaimodel.json 清单，自动挂上同包里的属性模型和候选框复检模型。
 - 工作台现在提供“复检采集”页，左侧图片列表直接读取当前“截图目录”（默认是 detection 原图目录）；同一张图可以连续框多个候选框，点已有框可移动位置、拖四角可调大小，框上会直接显示“未保存 / 正确样本 / 错误样本”状态；左侧图片项会用颜色区分“已存 / 待存”，并标出每张图已存/待存的框数量；右侧也会列出当前图片的全部框，支持按未保存、正确样本、错误样本筛选，点列表项即可快速切换到对应框，也可以直接点“删除选中框”移除当前框；当前激活框可保存到默认的 candidate_review/raw/positive 或 candidate_review/raw/negative；切到别的截图再点回来时，会自动把这张图已保存过的框重新回显出来，方便继续查看和修改；截图列表支持从资源管理器拖图片进来，也支持用 Ctrl+V 或“粘贴剪贴板”导入剪贴板里的图片或图片文件；如果已有 level/resource_type/relation 这类真目标裁剪，还可以在页内直接点“导入已有正确样本”批量复用，并可设置导入数量或随机抽样。
-- scan_ai_tile_thresholds.py 会直接复用主程序 AI 地块识别链路，扫描 detection conf 与 review threshold 组合，并输出 JSON/CSV 排名，适合先把当前模型阈值调准。
+- scan_ai_tile_thresholds.py 会直接复用主程序 AI 目标识别链路，扫描 detection conf 与 review threshold 组合，并输出 JSON/CSV 排名，适合先把当前模型阈值调准。
 - run_detection_experiment_matrix.py 会串起 train_yolo_tile.py、export_yolo_onnx.py 和离线 benchmark，默认比较 YOLOv8n/YOLOv8s 与 640/768，并把每个组合的最佳 conf、P/R/F1、平均耗时汇总到 outputs/detection_experiments。
 
 如果你只想先验证可行性，推荐先走单目标快测：
@@ -181,6 +182,6 @@ python ai_tile_mvp/scripts/run_detection_experiment_matrix.py --project-config a
 
 数据准备、训练和导出仍在这个独立工作区中完成。
 
-当前主程序已经可以继续做“可选 AI 地块识别”的最小接入，但默认不会替换旧模板识别流程。只有在任务步骤里显式选择 AI 地块识别，并且模型文件存在时，才会使用 AI 检测。
+当前主程序已经可以继续做“可选 AI 目标识别”的最小接入，但默认不会替换旧模板识别流程。只有在任务步骤里显式选择 AI 目标识别，并且模型文件存在时，才会使用 AI 检测。
 
 如果要分发给别人使用，优先发“模型包”而不是单个 onnx。别人拿到后可以直接在主程序里选择导出的 .zip，或选择包内的 .gaimodel.json；再退一步选择包内 models/detector 下的 onnx，也能自动加载同包里的属性/复检权重。

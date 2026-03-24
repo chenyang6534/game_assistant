@@ -1,4 +1,4 @@
-"""AI 地块识别可视化工作台。"""
+"""AI 目标识别可视化工作台。"""
 
 from __future__ import annotations
 
@@ -3895,7 +3895,7 @@ class BenchmarkTab(ProjectAwareTabBase):
 class AIWorkbenchWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("AI 地块识别工作台")
+        self.setWindowTitle("AI 目标识别工作台")
         self.resize(1180, 860)
         self._project_context = ProjectContext(self)
         self._smoke_context = SmokeSelectionContext(self)
