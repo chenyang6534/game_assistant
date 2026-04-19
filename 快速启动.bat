@@ -1,9 +1,9 @@
 @echo off
 chcp 65001 >nul
-title Game Assistant - 游戏辅助工具
+title WindowPilot - 窗口自动化与识别工具
 
 echo ========================================
-echo    Game Assistant - 游戏辅助工具
+echo    WindowPilot - 窗口自动化与识别工具
 echo ========================================
 echo.
 
@@ -35,7 +35,7 @@ echo.
 
 REM 检查依赖
 echo [信息] 正在检查依赖库...
-python -c "import mss, cv2, numpy, pynput, keyboard, PySide6" >nul 2>&1
+python -c "import mss, cv2, numpy, win32gui, pynput; from PySide6.QtWidgets import QApplication" >nul 2>&1
 if %errorLevel% neq 0 (
     echo [警告] 检测到缺失依赖库
     echo.

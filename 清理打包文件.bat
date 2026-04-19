@@ -2,6 +2,9 @@
 chcp 65001 >nul
 title 清理打包文件
 
+set "APP_EXE=WindowPilot.exe"
+set "LEGACY_EXE=GameAssistant.exe"
+
 echo ========================================
 echo    清理打包临时文件
 echo ========================================
@@ -16,15 +19,10 @@ if %errorLevel% neq 0 (
 
 REM 结束可能在运行的进程
 echo [1/4] 检查并结束相关进程...
-tasklist /FI "IMAGENAME eq GameAssistant.exe" 2>NUL | find /I /N "GameAssistant.exe">NUL
-if "%ERRORLEVEL%"=="0" (
-    echo       发现运行中的 GameAssistant.exe，正在结束...
-    taskkill /F /IM GameAssistant.exe >NUL 2>&1
-    timeout /t 2 >NUL
-    echo       进程已结束
-) else (
-    echo       没有发现运行中的进程
-)
+taskkill /F /IM %APP_EXE% >NUL 2>&1
+taskkill /F /IM %LEGACY_EXE% >NUL 2>&1
+timeout /t 1 >NUL
+echo       已尝试结束 %APP_EXE% 和旧版 %LEGACY_EXE%
 echo.
 
 REM 清理 build 文件夹

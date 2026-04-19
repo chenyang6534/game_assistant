@@ -197,7 +197,7 @@ FAIL_ACTION_TYPE_GROUPS = (
 )
 
 DRAG_COORDINATE_MODE_LABELS = {
-    "game_logic": "游戏逻辑",
+    "game_logic": "逻辑坐标",
     "screen": "屏幕坐标",
 }
 
@@ -2036,7 +2036,7 @@ def _format_action_summary(action: Optional[dict], task_steps: Optional[List[Sin
     elif action_type == "highlight_point":
         detail = _format_highlight_point_summary(action)
     elif action_type == "drag_map":
-        mode_text = DRAG_COORDINATE_MODE_LABELS.get(action.get("drag_coordinate_mode", "game_logic"), "游戏逻辑")
+        mode_text = DRAG_COORDINATE_MODE_LABELS.get(action.get("drag_coordinate_mode", "game_logic"), "逻辑坐标")
         start_mode = action.get("drag_start_mode", "recognition") or "recognition"
         if start_mode == "screen_percent":
             start_text = (
@@ -2644,7 +2644,7 @@ class StepEditDialog(QDialog):
         self._press_keys_edit.setVisible(False)
 
         self._drag_coordinate_mode = QComboBox()
-        self._drag_coordinate_mode.addItem("游戏逻辑坐标偏移", "game_logic")
+        self._drag_coordinate_mode.addItem("逻辑坐标偏移", "game_logic")
         self._drag_coordinate_mode.addItem("屏幕坐标偏移", "screen")
         self._drag_coordinate_mode.currentIndexChanged.connect(self._update_drag_coordinate_mode_ui)
         self._drag_coordinate_mode_label = QLabel("拖动坐标系:")
@@ -2727,7 +2727,7 @@ class StepEditDialog(QDialog):
         self._drag_dir_x_spin.setRange(-10, 10)
         self._drag_dir_x_spin.setValue(0)
         self._drag_dir_x_spin.setToolTip(
-            "游戏地图X方向格数\n"
+            "逻辑网格 X 方向格数\n"
             "正数=镜头向X+方向移动（屏幕左下）\n"
             "负数=镜头向X-方向移动（屏幕右上）"
         )
@@ -2737,7 +2737,7 @@ class StepEditDialog(QDialog):
         self._drag_dir_y_spin.setRange(-10, 10)
         self._drag_dir_y_spin.setValue(0)
         self._drag_dir_y_spin.setToolTip(
-            "游戏地图Y方向格数\n"
+            "逻辑网格 Y 方向格数\n"
             "正数=镜头向Y+方向移动（屏幕右下）\n"
             "负数=镜头向Y-方向移动（屏幕左上）"
         )
@@ -3656,12 +3656,12 @@ class StepEditDialog(QDialog):
         else:
             self._drag_dir_label.setText("拖动方向:")
             self._drag_dir_x_spin.setToolTip(
-                "游戏地图X方向格数\n"
+                "逻辑网格 X 方向格数\n"
                 "正数=镜头向X+方向移动（屏幕左下）\n"
                 "负数=镜头向X-方向移动（屏幕右上）"
             )
             self._drag_dir_y_spin.setToolTip(
-                "游戏地图Y方向格数\n"
+                "逻辑网格 Y 方向格数\n"
                 "正数=镜头向Y+方向移动（屏幕右下）\n"
                 "负数=镜头向Y-方向移动（屏幕左上）"
             )
@@ -6138,7 +6138,7 @@ class MainActionEditDialog(QDialog):
         form.addRow(self._press_keys_label, self._press_keys_edit)
 
         self._drag_coordinate_mode = QComboBox()
-        self._drag_coordinate_mode.addItem("游戏逻辑坐标偏移", "game_logic")
+        self._drag_coordinate_mode.addItem("逻辑坐标偏移", "game_logic")
         self._drag_coordinate_mode.addItem("屏幕坐标偏移", "screen")
         self._drag_coordinate_mode.currentIndexChanged.connect(self._update_drag_coordinate_mode_ui)
         self._drag_coordinate_mode_label = QLabel("拖动坐标系:")
@@ -6866,12 +6866,12 @@ class MainActionEditDialog(QDialog):
         else:
             self._drag_dir_label.setText("拖动方向:")
             self._drag_dir_x_spin.setToolTip(
-                "游戏地图X方向格数\n"
+                "逻辑网格 X 方向格数\n"
                 "正数=镜头向X+方向移动（屏幕左下）\n"
                 "负数=镜头向X-方向移动（屏幕右上）"
             )
             self._drag_dir_y_spin.setToolTip(
-                "游戏地图Y方向格数\n"
+                "逻辑网格 Y 方向格数\n"
                 "正数=镜头向Y+方向移动（屏幕右下）\n"
                 "负数=镜头向Y-方向移动（屏幕左上）"
             )

@@ -1,6 +1,6 @@
 """
 主窗口
-游戏辅助工具的主界面
+Windows 自动化与识别工具的主界面
 """
 
 import sys
@@ -36,6 +36,7 @@ from recorder.storage import ScriptStorage, Script, create_script_from_events
 from utils.hotkey import HotkeyManager
 from utils.logger import get_logger
 from utils.tray import TrayIcon, MenuItem
+from utils.app_meta import APP_DISPLAY_NAME, APP_TOOLTIP
 
 from gui.widgets.window_picker import WindowPicker
 from gui.widgets.hotkey_editor import HotkeyEditor
@@ -94,7 +95,7 @@ class MainWindow(QMainWindow):
         self._init_tray()
         self._connect_signals()
         
-        self._logger.info("游戏辅助工具启动")
+        self._logger.info("自动化工具启动")
     
     def _load_config(self) -> dict:
         """加载配置文件"""
@@ -136,7 +137,7 @@ class MainWindow(QMainWindow):
     
     def _init_ui(self):
         """初始化UI"""
-        self.setWindowTitle("Game Assistant - 游戏辅助工具")
+        self.setWindowTitle(APP_DISPLAY_NAME)
         self.setMinimumSize(800, 600)
         
         # 设置窗口大小
@@ -523,13 +524,13 @@ class MainWindow(QMainWindow):
         # 后台模式
         self._ocr_background_mode = QCheckBox("后台模式（窗口被遮挡也能操作）")
         self._ocr_background_mode.setChecked(True)
-        self._ocr_background_mode.setToolTip("后台截图和点击，对于模拟器/游戏可能无效")
+        self._ocr_background_mode.setToolTip("后台截图和点击，对某些模拟器或特殊渲染程序可能无效")
         control_layout.addWidget(self._ocr_background_mode)
         
         # 激活窗口选项
-        self._ocr_activate_window = QCheckBox("点击前激活窗口（推荐用于模拟器/游戏）")
+        self._ocr_activate_window = QCheckBox("点击前激活窗口（推荐用于模拟器或特殊渲染程序）")
         self._ocr_activate_window.setChecked(False)
-        self._ocr_activate_window.setToolTip("点击前先激活目标窗口，对模拟器/游戏更可靠")
+        self._ocr_activate_window.setToolTip("点击前先激活目标窗口，对模拟器或特殊渲染程序更可靠")
         control_layout.addWidget(self._ocr_activate_window)
         
         layout.addWidget(control_group)
@@ -644,7 +645,7 @@ class MainWindow(QMainWindow):
             self._logger.warning("系统托盘不可用")
             return
         
-        self._tray = TrayIcon(tooltip="Game Assistant")
+        self._tray = TrayIcon(tooltip=APP_TOOLTIP)
         
         # 添加菜单项
         self._tray.add_menu_item("show", MenuItem(
@@ -1071,7 +1072,7 @@ class MainWindow(QMainWindow):
                     "可能原因：\n"
                     "1. 目标窗口使用了DirectX/OpenGL渲染\n"
                     "2. 窗口处于最小化状态\n"
-                    "3. 游戏有反截图保护\n\n"
+                    "3. 目标程序有反截图保护\n\n"
                     "建议：取消勾选'后台模式'后重试"
                 )
                 return

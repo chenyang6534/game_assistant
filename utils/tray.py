@@ -16,6 +16,12 @@ try:
 except ImportError:
     raise ImportError("请安装 PySide6: pip install PySide6")
 
+try:
+    from .app_meta import APP_NAME, APP_TOOLTIP
+except ImportError:
+    APP_NAME = "WindowPilot"
+    APP_TOOLTIP = APP_NAME
+
 
 @dataclass
 class MenuItem:
@@ -39,7 +45,7 @@ class TrayIcon(QObject):
     
     def __init__(self, 
                  icon_path: str = None,
-                 tooltip: str = "Game Assistant",
+                 tooltip: str = APP_TOOLTIP,
                  parent: QWidget = None):
         """
         初始化系统托盘
@@ -223,7 +229,7 @@ def create_standard_tray(on_show: Callable = None,
                         on_start_stop: Callable = None,
                         on_pause: Callable = None,
                         on_exit: Callable = None,
-                        tooltip: str = "Game Assistant") -> TrayIcon:
+                        tooltip: str = APP_TOOLTIP) -> TrayIcon:
     """
     创建标准托盘图标（带常用菜单项）
     
@@ -310,7 +316,7 @@ if __name__ == "__main__":
     tray.double_clicked.connect(on_show)
     
     tray.show()
-    tray.show_info("Game Assistant", "程序已启动，点击托盘图标显示主窗口")
+    tray.show_info(APP_NAME, "程序已启动，点击托盘图标显示主窗口")
     
     print("系统托盘已启动，右键点击托盘图标查看菜单")
     

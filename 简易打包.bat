@@ -1,12 +1,17 @@
 @echo off
 REM Simple Packaging Script - Run as NORMAL user (NOT administrator)
-title PyInstaller - Game Assistant
+title PyInstaller - WindowPilot
+
+set "APP_NAME=WindowPilot"
+set "APP_EXE=%APP_NAME%.exe"
+set "DIST_DIR=%APP_NAME%"
+set "LEGACY_EXE=GameAssistant.exe"
 
 REM Switch to script directory
 cd /d "%~dp0"
 
 echo ========================================
-echo    Game Assistant Packaging Tool
+echo    WindowPilot Packaging Tool
 echo ========================================
 echo.
 echo Current directory: %CD%
@@ -44,7 +49,8 @@ if %errorLevel% neq 0 (
 )
 
 REM Kill running process
-taskkill /F /IM GameAssistant.exe >NUL 2>&1
+taskkill /F /IM %APP_EXE% >NUL 2>&1
+taskkill /F /IM %LEGACY_EXE% >NUL 2>&1
 
 REM Clean old files
 if exist "build" rmdir /s /q build 2>nul
@@ -57,7 +63,7 @@ echo.
 
 REM Package
 python -m PyInstaller ^
-    --name=GameAssistant ^
+    --name=%APP_NAME% ^
     --windowed ^
     --onedir ^
     --noconfirm ^
@@ -91,8 +97,8 @@ echo ========================================
 echo [SUCCESS] Done!
 echo ========================================
 echo.
-echo Output: dist\GameAssistant\GameAssistant.exe
+echo Output: dist\%DIST_DIR%\%APP_EXE%
 echo.
 
-explorer dist\GameAssistant
+explorer dist\%DIST_DIR%
 pause

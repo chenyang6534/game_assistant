@@ -10,6 +10,11 @@ from datetime import datetime
 from typing import Optional
 from pathlib import Path
 
+try:
+    from .app_meta import APP_LOGGER_NAME
+except ImportError:
+    APP_LOGGER_NAME = "WindowPilot"
+
 
 class ColoredFormatter(logging.Formatter):
     """彩色日志格式化器（仅控制台）"""
@@ -39,7 +44,7 @@ class ColoredFormatter(logging.Formatter):
 class Logger:
     """日志记录器"""
     
-    def __init__(self, name: str = "GameAssistant", 
+    def __init__(self, name: str = APP_LOGGER_NAME, 
                  log_dir: str = None,
                  console_level: int = logging.INFO,
                  file_level: int = logging.DEBUG,
@@ -190,12 +195,12 @@ def get_logger(name: str = None) -> Logger:
     global _global_logger
     
     if _global_logger is None:
-        _global_logger = Logger(name or "GameAssistant")
+        _global_logger = Logger(name or APP_LOGGER_NAME)
     
     return _global_logger
 
 
-def setup_logger(name: str = "GameAssistant",
+def setup_logger(name: str = APP_LOGGER_NAME,
                 log_dir: str = None,
                 console_level: int = logging.INFO,
                 file_level: int = logging.DEBUG,

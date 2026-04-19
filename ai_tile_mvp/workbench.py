@@ -1037,7 +1037,7 @@ class SamplingTab(ProjectAwareTabBase):
         main_layout = QVBoxLayout(self)
 
         tips = QLabel(
-            "采样开始后，请切到游戏窗口并手动拖地图、缩放视角、切换场景，让采样器截到更多不同画面。"
+            "采样开始后，请切到目标窗口并手动拖地图、缩放视角、切换场景，让采样器截到更多不同画面。"
             "如果画面静止不动，采样器只会得到少量相似图片。"
         )
         tips.setWordWrap(True)
@@ -2559,7 +2559,7 @@ class AIWorkbenchWindow(QMainWindow):
         intro = QLabel(
             "这是独立于主程序的 AI 工作台。你可以先在“创建项目”页生成一个独立项目目录，再进入完整流程：采样 -> 标注 -> 同步 -> 检测切分/训练 -> 属性切分/训练 -> 导出 -> 基准测试。"
             "如果你只想先验证可行性，也可以先走：标注 -> 单目标快测 -> 检测切分/训练 -> 导出 -> 基准测试。"
-            "采样时你需要手动操作目标游戏窗口，制造更多不同画面。"
+            "采样时你需要手动操作目标窗口，制造更多不同画面。"
         )
         intro.setWordWrap(True)
         intro.setStyleSheet("font-size: 13px; color: #333;")

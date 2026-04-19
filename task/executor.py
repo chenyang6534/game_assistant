@@ -3429,7 +3429,7 @@ class TaskExecutor:
                         )
                     else:
                         self._log(
-                            f"后台拖动地图: {start_label} ({start_x}, {start_y}) -> ({end_x}, {end_y}), 游戏方向=({drag_direction_x}, {drag_direction_y})"
+                            f"后台拖动地图: {start_label} ({start_x}, {start_y}) -> ({end_x}, {end_y}), 逻辑方向=({drag_direction_x}, {drag_direction_y})"
                         )
                     return
                 elif action == "drag_match_to_center":
@@ -3522,7 +3522,7 @@ class TaskExecutor:
                         )
                     else:
                         self._log(
-                            f"前台拖动地图: {start_label} ({start_screen_x}, {start_screen_y}) -> ({end_screen_x}, {end_screen_y}), 游戏方向=({drag_direction_x}, {drag_direction_y})"
+                            f"前台拖动地图: {start_label} ({start_screen_x}, {start_screen_y}) -> ({end_screen_x}, {end_screen_y}), 逻辑方向=({drag_direction_x}, {drag_direction_y})"
                         )
                     return
                 elif action == "drag_match_to_center":
@@ -4207,13 +4207,13 @@ class TaskExecutor:
                              drag_direction_x=None, drag_direction_y=None,
                              drag_distance=None):
         """
-        等距(isometric)地图：将游戏坐标方向转换为屏幕拖动终点
+        等距(isometric)地图：将逻辑坐标方向转换为屏幕拖动终点
 
         轴方向由 config.json 中的 isometric.axis_x / axis_y 定义：
-          axis_x = [sx, sy] 表示游戏 X+方向在屏幕上的单位向量
-          axis_y = [sx, sy] 表示游戏 Y+方向在屏幕上的单位向量
+          axis_x = [sx, sy] 表示逻辑 X+方向在屏幕上的单位向量
+          axis_y = [sx, sy] 表示逻辑 Y+方向在屏幕上的单位向量
 
-        镜头要向游戏方向移动，鼠标需向相反方向拖动，因此取反。
+        镜头要向逻辑方向移动，鼠标需向相反方向拖动，因此取反。
         归一化后乘以 drag_distance 得到实际像素偏移。
         """
         import math
@@ -4227,7 +4227,7 @@ class TaskExecutor:
         game_dy = step.drag_direction_y if drag_direction_y is None else drag_direction_y
         drag_distance = step.drag_distance if drag_distance is None else drag_distance
 
-        # 游戏方向 → 屏幕方向（线性组合）
+        # 逻辑方向 → 屏幕方向（线性组合）
         screen_dx = game_dx * iso_axis_x[0] + game_dy * iso_axis_y[0]
         screen_dy = game_dx * iso_axis_x[1] + game_dy * iso_axis_y[1]
 
@@ -4795,7 +4795,7 @@ class TaskExecutor:
             if response_ratio_y is not None and delta_y != 0:
                 command_dy = int(round(delta_y / response_ratio_y))
 
-            # 游戏内拖动在接近中心时可能对 1px 指令没有响应。
+            # 目标程序内拖动在接近中心时可能对 1px 指令没有响应。
             # 一旦检测到停滞，逐步放大这类微调指令，强制探测出最小有效拖动量。
             if stagnation_count > 0:
                 probe_scale = min(stagnation_count + 1, 8)

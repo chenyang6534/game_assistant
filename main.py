@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Game Assistant - 游戏辅助工具
+WindowPilot - 窗口自动化与识别工具
 
 主程序入口
 """
@@ -9,6 +9,8 @@ Game Assistant - 游戏辅助工具
 import sys
 import os
 import signal
+
+from utils.app_meta import APP_DISPLAY_NAME, APP_NAME
 
 # 确保项目根目录在路径中
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -111,8 +113,8 @@ def main():
     # 避免使用 print()，因为窗口程序没有控制台
     
     # 设置应用信息
-    app.setApplicationName("Game Assistant")
-    app.setApplicationDisplayName("Game Assistant - 游戏辅助工具")
+        app.setApplicationName(APP_NAME)
+        app.setApplicationDisplayName(APP_DISPLAY_NAME)
     _install_sigint_handler(app)
     
     # 设置样式

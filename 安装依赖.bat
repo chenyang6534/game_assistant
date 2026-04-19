@@ -3,7 +3,7 @@ chcp 65001 >nul
 title 安装依赖库
 
 echo ========================================
-echo    安装 Game Assistant 依赖库
+echo    安装 WindowPilot 依赖库
 echo ========================================
 echo.
 

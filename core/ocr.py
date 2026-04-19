@@ -124,7 +124,7 @@ class OCRRecognition:
                 # BGRA格式，转换为BGR
                 image = cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
             
-            # 执行OCR识别（跳过文字方向分类器cls，游戏文字总是水平的）
+            # 执行OCR识别（跳过文字方向分类器 cls，当前目标窗口里的文字通常为水平排布）
             result, elapse = self._ocr(image, use_det=True, use_cls=False, use_rec=True)
             
             if result is None:

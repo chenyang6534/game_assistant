@@ -442,7 +442,7 @@ class NetworkPanel(QWidget):
         self._protobuf_view.setFont(QFont("Consolas", 10))
         self._protobuf_view.setPlaceholderText(
             "点击「尝试解析」将当前数据包按 Protobuf 格式裸解析。\n\n"
-            "许多游戏使用 Protobuf (Protocol Buffers) 序列化网络消息。\n"
+            "许多客户端程序使用 Protobuf (Protocol Buffers) 序列化网络消息。\n"
             "裸解析可以在没有 .proto 定义的情况下，提取出字段编号、\n"
             "wire type 和原始值，帮助逆向分析协议结构。\n\n"
             "如果解析失败或结果无意义，说明数据不是 Protobuf 格式\n"

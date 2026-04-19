@@ -158,7 +158,7 @@ class ScreenCapture:
         """
         使用BitBlt方式截取窗口（可以截取被遮挡的窗口）
         
-        注意: 某些DirectX/OpenGL游戏可能无法使用此方法
+        注意: 某些 DirectX/OpenGL 程序可能无法使用此方法
         
         Args:
             hwnd: 窗口句柄

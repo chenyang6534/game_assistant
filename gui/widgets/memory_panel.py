@@ -75,8 +75,8 @@ class MemoryPanel(QWidget):
 
         # 说明
         info = QLabel(
-            "💡 内存扫描：在游戏进程内存中搜索已知数值（如坐标），多次筛选定位精确地址。\n"
-            "用法：输入已知值 → 首次扫描 → 在游戏中改变该值 → 输入新值 → 再次扫描 → 重复直到结果收敛。"
+            "💡 内存扫描：在目标进程内存中搜索已知数值（如坐标），多次筛选定位精确地址。\n"
+            "用法：输入已知值 → 首次扫描 → 在目标程序中改变该值 → 输入新值 → 再次扫描 → 重复直到结果收敛。"
         )
         info.setWordWrap(True)
         info.setStyleSheet(
@@ -424,7 +424,7 @@ class MemoryPanel(QWidget):
         if count == 0:
             self._result_count_info.setText("未找到匹配。试试其他数据类型？")
         elif count > 10000:
-            self._result_count_info.setText(f"结果过多({count})，请在游戏中改变数值后再次扫描缩小范围")
+            self._result_count_info.setText(f"结果过多({count})，请先在目标程序中改变该数值后再次扫描缩小范围")
         else:
             self._result_count_info.setText("")
 

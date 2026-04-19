@@ -1,10 +1,15 @@
 @echo off
 REM 设置代码页为 UTF-8
 chcp 65001 >nul 2>nul
-title 打包 Game Assistant 为 EXE
+title 打包 WindowPilot 为 EXE
+
+set "APP_NAME=WindowPilot"
+set "APP_EXE=%APP_NAME%.exe"
+set "DIST_DIR=%APP_NAME%"
+set "LEGACY_EXE=GameAssistant.exe"
 
 echo ========================================
-echo    打包 Game Assistant 为 EXE
+echo    打包 WindowPilot 为 EXE
 echo ========================================
 echo.
 
@@ -46,12 +51,8 @@ echo.
 
 REM 检查并结束可能在运行的进程
 echo [INFO] Checking for running processes...
-tasklist /FI "IMAGENAME eq GameAssistant.exe" 2>NUL | find /I /N "GameAssistant.exe">NUL
-if "%ERRORLEVEL%"=="0" (
-    echo [WARN] GameAssistant.exe is running, attempting to stop...
-    taskkill /F /IM GameAssistant.exe >NUL 2>&1
-    timeout /t 2 >NUL
-)
+taskkill /F /IM %APP_EXE% >NUL 2>&1
+taskkill /F /IM %LEGACY_EXE% >NUL 2>&1
 
 REM 清理旧文件
 if exist "build\" (
@@ -84,7 +85,7 @@ echo [TIP] This may take 5-10 minutes, please wait...
 echo.
 
 REM 打包命令
-pyinstaller --name="GameAssistant" ^
+pyinstaller --name="%APP_NAME%" ^
     --windowed ^
     --onedir ^
     --add-data="templates;templates" ^
@@ -113,7 +114,7 @@ if %errorLevel% neq 0 (
     echo    Solution: Run as NORMAL user (NOT administrator^)
     echo.
     echo 2. Program is running
-    echo    Solution: Close all GameAssistant.exe processes
+    echo    Solution: Close all WindowPilot.exe processes
     echo.
     echo 3. Antivirus interference
     echo    Solution: Disable antivirus or add folder to whitelist
@@ -136,16 +137,16 @@ echo ========================================
 echo [SUCCESS] Packaging completed!
 echo ========================================
 echo.
-echo Executable location: dist\GameAssistant\GameAssistant.exe
+echo Executable location: dist\%DIST_DIR%\%APP_EXE%
 echo.
 echo Distribution instructions:
-echo 1. Copy the entire dist\GameAssistant folder to target PC
-echo 2. Right-click GameAssistant.exe -^> Run as administrator
+echo 1. Copy the entire dist\%DIST_DIR% folder to target PC
+echo 2. Right-click %APP_EXE% -^> Run as administrator
 echo.
 echo Open output folder now? (Y/N^)
 choice /C YN /N /M "Choose: "
 if errorlevel 1 if not errorlevel 2 (
-    explorer dist\GameAssistant
+    explorer dist\%DIST_DIR%
 )
 
 pause

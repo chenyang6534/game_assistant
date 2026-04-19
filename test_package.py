@@ -47,12 +47,6 @@ def test_imports():
         print(f"✗ pynput: {e}")
     
     try:
-        import keyboard
-        print("✓ keyboard")
-    except ImportError as e:
-        print(f"✗ keyboard: {e}")
-    
-    try:
         from PySide6.QtWidgets import QApplication
         print("✓ PySide6")
     except ImportError as e:

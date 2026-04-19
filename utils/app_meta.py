@@ -1,0 +1,8 @@
+"""应用元信息。"""
+
+APP_NAME = "WindowPilot"
+APP_DISPLAY_NAME = "WindowPilot - 窗口自动化与识别工具"
+APP_TOOLTIP = APP_NAME
+APP_LOGGER_NAME = APP_NAME
+APP_EXE_NAME = f"{APP_NAME}.exe"
+APP_DIST_DIR = APP_NAME

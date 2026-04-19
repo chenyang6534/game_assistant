@@ -1,4 +1,4 @@
-# Game Assistant Dependencies
+# WindowPilot Dependencies
 # 屏幕捕获
 mss>=9.0.0
 

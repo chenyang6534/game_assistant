@@ -32,7 +32,7 @@
 
 1. 安装独立训练依赖
 2. 直接运行 workbench.py 或 启动AI工作台.bat
-3. 在“采样”页里选择游戏窗口并开始采样
+3. 在“采样”页里选择目标窗口并开始采样
 4. 在“标注与抽检”页里用单类框 + shape attributes 标注
 5. 运行同步脚本，自动生成单类检测标签和三份属性分类裁剪集
 6. 分别进行检测切分/训练，属性切分/训练
@@ -83,7 +83,7 @@ python ai_tile_mvp/scripts/build_single_target_dataset.py --image-dir ai_tile_mv
 采样：
 
 ```powershell
-python ai_tile_mvp/scripts/sample_map_tiles.py --window-title "你的游戏窗口标题" --count 300 --interval 1.2
+python ai_tile_mvp/scripts/sample_map_tiles.py --window-title "你的目标窗口标题" --count 300 --interval 1.2
 ```
 
 交互采样：

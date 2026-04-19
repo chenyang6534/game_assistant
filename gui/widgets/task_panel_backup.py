@@ -171,7 +171,7 @@ class StepEditDialog(QDialog):
         self._drag_dir_x_spin.setRange(-10, 10)
         self._drag_dir_x_spin.setValue(0)
         self._drag_dir_x_spin.setToolTip(
-            "游戏地图X方向格数\n"
+            "逻辑网格 X 方向格数\n"
             "正数=镜头向X+方向移动（屏幕左下）\n"
             "负数=镜头向X-方向移动（屏幕右上）"
         )
@@ -181,7 +181,7 @@ class StepEditDialog(QDialog):
         self._drag_dir_y_spin.setRange(-10, 10)
         self._drag_dir_y_spin.setValue(0)
         self._drag_dir_y_spin.setToolTip(
-            "游戏地图Y方向格数\n"
+            "逻辑网格 Y 方向格数\n"
             "正数=镜头向Y+方向移动（屏幕右下）\n"
             "负数=镜头向Y-方向移动（屏幕左上）"
         )

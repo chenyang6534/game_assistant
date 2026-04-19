@@ -1,6 +1,6 @@
 """
 窗口选择器控件
-用于选择目标游戏窗口
+用于选择目标窗口
 """
 
 from typing import Optional, List

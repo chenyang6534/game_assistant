@@ -112,7 +112,7 @@ class WindowManager:
     
     def get_game_windows(self) -> List[WindowInfo]:
         """
-        获取可能是游戏的窗口（过滤系统窗口）
+        获取可作为目标窗口的候选项（过滤系统窗口）
         
         Returns:
             过滤后的WindowInfo列表
@@ -297,7 +297,7 @@ class WindowManager:
 if __name__ == "__main__":
     manager = WindowManager()
     
-    print("=== 所有游戏窗口 ===")
+    print("=== 所有候选窗口 ===")
     windows = manager.get_game_windows()
     
     for i, win in enumerate(windows[:10]):  # 显示前10个
