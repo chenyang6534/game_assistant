@@ -1,0 +1,10 @@
+{
+  "image_dir": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\datasets\\plot_det\\raw\\images",
+  "label_dir": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\datasets\\plot_det\\raw\\labels",
+  "output_root": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\datasets\\plot_det\\excluded\\unconfirmed_raw",
+  "dry_run": false,
+  "moved_count": 0,
+  "skipped_with_json": 0,
+  "skipped_with_nonempty_txt": 0,
+  "moved_examples": []
+}

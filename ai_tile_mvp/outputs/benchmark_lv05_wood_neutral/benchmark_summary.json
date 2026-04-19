@@ -1,0 +1,68 @@
+{
+  "image_count": 6,
+  "repeat": 10,
+  "avg_ms": 40.557,
+  "details": [
+    {
+      "image": "map_20260317_093625_0002.png",
+      "detections": 0,
+      "avg_ms": 38.344,
+      "gt": 1,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1
+    },
+    {
+      "image": "map_20260317_093651_0012.png",
+      "detections": 0,
+      "avg_ms": 36.984,
+      "gt": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "image": "map_20260317_093710_0021.png",
+      "detections": 0,
+      "avg_ms": 38.925,
+      "gt": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "image": "map_20260317_093717_0024.png",
+      "detections": 3,
+      "avg_ms": 38.406,
+      "gt": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "image": "map_20260317_093826_0056.png",
+      "detections": 0,
+      "avg_ms": 42.94,
+      "gt": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "image": "map_20260317_093855_0070.png",
+      "detections": 0,
+      "avg_ms": 47.741,
+      "gt": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    }
+  ],
+  "eval_iou": 0.5,
+  "tp": 3,
+  "fp": 0,
+  "fn": 1,
+  "precision": 1.0,
+  "recall": 0.75,
+  "f1": 0.8571
+}

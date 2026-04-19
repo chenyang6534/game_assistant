@@ -1,0 +1,74 @@
+{
+  "version": "4.0.0-beta.2",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "resource_node",
+      "points": [
+        [
+          394.30612244897964,
+          216.16326530612244
+        ],
+        [
+          553.4897959183673,
+          216.16326530612244
+        ],
+        [
+          553.4897959183673,
+          314.1224489795918
+        ],
+        [
+          394.30612244897964,
+          314.1224489795918
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {
+        "等级": "5级",
+        "类型": "木材",
+        "关系": "中立"
+      },
+      "kie_linking": []
+    },
+    {
+      "label": "resource_node",
+      "points": [
+        [
+          664.7142857142858,
+          255.95918367346937
+        ],
+        [
+          815.7346938775511,
+          255.95918367346937
+        ],
+        [
+          815.7346938775511,
+          369.2244897959183
+        ],
+        [
+          664.7142857142858,
+          369.2244897959183
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {
+        "等级": "5级",
+        "类型": "木材",
+        "关系": "中立"
+      },
+      "kie_linking": []
+    }
+  ],
+  "imagePath": "..\\images\\map_20260317_094003_0097.png",
+  "imageData": null,
+  "imageHeight": 566,
+  "imageWidth": 958
+}

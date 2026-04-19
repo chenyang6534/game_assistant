@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "project_name": "sanzhan_plot",
+  "project_slug": "sanzhan_plot",
+  "detection_label": "sanzhan_plot_node",
+  "detection_run_name": "sanzhan_plot_det_yolov8n",
+  "attribute_spec_text": "等级: 4级, 5级, 6级, 7级, 8级, 9级, 10级\n类型: 木材, 石头, 铁矿, 铜矿, 粮食\n关系: 同盟, 友盟, 中立, 敌对, 我方",
+  "attribute_tasks": [
+    {
+      "display_name": "等级",
+      "slug": "level",
+      "aliases": [
+        "等级",
+        "level",
+        "级别"
+      ],
+      "classes": [
+        {
+          "display_name": "4级",
+          "slug": "lv04",
+          "aliases": [
+            "4级",
+            "lv04",
+            "4",
+            "04",
+            "lv4"
+          ]
+        },
+        {
+          "display_name": "5级",
+          "slug": "lv05",
+          "aliases": [
+            "5级",
+            "lv05",
+            "5",
+            "05",
+            "lv5"
+          ]
+        },
+        {
+          "display_name": "6级",
+          "slug": "lv06",
+          "aliases": [
+            "6级",
+            "lv06",
+            "6",
+            "06",
+            "lv6"
+          ]
+        },
+        {
+          "display_name": "7级",
+          "slug": "lv07",
+          "aliases": [
+            "7级",
+            "lv07",
+            "7",
+            "07",
+            "lv7"
+          ]
+        },
+        {
+          "display_name": "8级",
+          "slug": "lv08",
+          "aliases": [
+            "8级",
+            "lv08",
+            "8",
+            "08",
+            "lv8"
+          ]
+        },
+        {
+          "display_name": "9级",
+          "slug": "lv09",
+          "aliases": [
+            "9级",
+            "lv09",
+            "9",
+            "09",
+            "lv9"
+          ]
+        },
+        {
+          "display_name": "10级",
+          "slug": "lv10",
+          "aliases": [
+            "10级",
+            "lv10",
+            "10"
+          ]
+        }
+      ]
+    },
+    {
+      "display_name": "类型",
+      "slug": "resource_type",
+      "aliases": [
+        "类型",
+        "resource_type",
+        "资源类型"
+      ],
+      "classes": [
+        {
+          "display_name": "木材",
+          "slug": "wood",
+          "aliases": [
+            "木材",
+            "wood"
+          ]
+        },
+        {
+          "display_name": "石头",
+          "slug": "stone",
+          "aliases": [
+            "石头",
+            "stone",
+            "石料"
+          ]
+        },
+        {
+          "display_name": "铁矿",
+          "slug": "iron",
+          "aliases": [
+            "铁矿",
+            "iron"
+          ]
+        },
+        {
+          "display_name": "铜矿",
+          "slug": "copper",
+          "aliases": [
+            "铜矿",
+            "copper",
+            "铜"
+          ]
+        },
+        {
+          "display_name": "粮食",
+          "slug": "food",
+          "aliases": [
+            "粮食",
+            "food"
+          ]
+        }
+      ]
+    },
+    {
+      "display_name": "关系",
+      "slug": "relation",
+      "aliases": [
+        "关系",
+        "relation",
+        "阵营",
+        "外交关系"
+      ],
+      "classes": [
+        {
+          "display_name": "同盟",
+          "slug": "ally",
+          "aliases": [
+            "同盟",
+            "ally"
+          ]
+        },
+        {
+          "display_name": "友盟",
+          "slug": "friendly",
+          "aliases": [
+            "友盟",
+            "friendly"
+          ]
+        },
+        {
+          "display_name": "中立",
+          "slug": "neutral",
+          "aliases": [
+            "中立",
+            "neutral"
+          ]
+        },
+        {
+          "display_name": "敌对",
+          "slug": "enemy",
+          "aliases": [
+            "敌对",
+            "enemy"
+          ]
+        },
+        {
+          "display_name": "我方",
+          "slug": "self",
+          "aliases": [
+            "我方",
+            "self"
+          ]
+        }
+      ]
+    }
+  ],
+  "paths": {
+    "configs_root": "configs",
+    "detection_root": "datasets/detection",
+    "detection_raw_images": "datasets/detection/raw/images",
+    "detection_raw_labels": "datasets/detection/raw/labels",
+    "attribute_root": "datasets/attribute_cls",
+    "smoke_root": "datasets/smoke_tests",
+    "models_root": "models/detector",
+    "outputs_root": "outputs",
+    "outputs_label_check": "outputs/label_check",
+    "outputs_train": "outputs/train",
+    "outputs_train_attr": "outputs/train_attr",
+    "outputs_benchmark": "outputs/benchmark_preview",
+    "scripts_root": "scripts"
+  }
+}

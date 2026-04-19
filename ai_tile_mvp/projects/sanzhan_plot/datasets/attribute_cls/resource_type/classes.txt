@@ -1,0 +1,5 @@
+copper
+food
+iron
+stone
+wood

@@ -1,0 +1,31 @@
+{
+  "classes": [
+    "ally",
+    "enemy",
+    "neutral",
+    "self"
+  ],
+  "seed": 42,
+  "splits": {
+    "ally": {
+      "train": 91,
+      "val": 11,
+      "test": 12
+    },
+    "enemy": {
+      "train": 34,
+      "val": 4,
+      "test": 5
+    },
+    "neutral": {
+      "train": 192,
+      "val": 24,
+      "test": 25
+    },
+    "self": {
+      "train": 26,
+      "val": 3,
+      "test": 4
+    }
+  }
+}

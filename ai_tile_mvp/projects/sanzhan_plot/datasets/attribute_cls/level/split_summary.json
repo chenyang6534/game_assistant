@@ -1,0 +1,49 @@
+{
+  "classes": [
+    "lv04",
+    "lv05",
+    "lv06",
+    "lv07",
+    "lv08",
+    "lv09",
+    "lv10"
+  ],
+  "seed": 42,
+  "splits": {
+    "lv04": {
+      "train": 87,
+      "val": 10,
+      "test": 12
+    },
+    "lv05": {
+      "train": 161,
+      "val": 20,
+      "test": 21
+    },
+    "lv06": {
+      "train": 44,
+      "val": 5,
+      "test": 6
+    },
+    "lv07": {
+      "train": 18,
+      "val": 2,
+      "test": 3
+    },
+    "lv08": {
+      "train": 19,
+      "val": 2,
+      "test": 3
+    },
+    "lv09": {
+      "train": 5,
+      "val": 0,
+      "test": 2
+    },
+    "lv10": {
+      "train": 8,
+      "val": 1,
+      "test": 2
+    }
+  }
+}

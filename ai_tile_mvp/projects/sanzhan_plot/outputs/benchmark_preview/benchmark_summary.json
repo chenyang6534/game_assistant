@@ -1,0 +1,41 @@
+{
+  "image_count": 3,
+  "repeat": 10,
+  "avg_ms": 41.404,
+  "details": [
+    {
+      "image": "sanzhan_plot_20260317_184919_0001.png",
+      "detections": 13,
+      "avg_ms": 39.261,
+      "gt": 11,
+      "tp": 10,
+      "fp": 3,
+      "fn": 1
+    },
+    {
+      "image": "sanzhan_plot_20260317_184924_0004.png",
+      "detections": 19,
+      "avg_ms": 46.906,
+      "gt": 19,
+      "tp": 17,
+      "fp": 2,
+      "fn": 2
+    },
+    {
+      "image": "sanzhan_plot_20260317_185027_0049.png",
+      "detections": 10,
+      "avg_ms": 38.044,
+      "gt": 10,
+      "tp": 7,
+      "fp": 3,
+      "fn": 3
+    }
+  ],
+  "eval_iou": 0.5,
+  "tp": 34,
+  "fp": 8,
+  "fn": 6,
+  "precision": 0.8095,
+  "recall": 0.85,
+  "f1": 0.8293
+}

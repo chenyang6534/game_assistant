@@ -1,0 +1,8 @@
+{
+  "total": 25,
+  "seed": 42,
+  "empty_labels_created": 0,
+  "train": 20,
+  "val": 2,
+  "test": 3
+}

@@ -1,0 +1,43 @@
+{
+  "version": "4.0.0-beta.2",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "resource_node",
+      "score": null,
+      "points": [
+        [
+          175.70329670329676,
+          197.83516483516487
+        ],
+        [
+          330.64835164835165,
+          197.83516483516487
+        ],
+        [
+          330.64835164835165,
+          283.5494505494505
+        ],
+        [
+          175.70329670329676,
+          283.5494505494505
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {
+        "等级": "4级",
+        "类型": "木材",
+        "关系": "同盟"
+      },
+      "kie_linking": []
+    }
+  ],
+  "imagePath": "..\\images\\map_20260317_093638_0005.png",
+  "imageData": null,
+  "imageHeight": 566,
+  "imageWidth": 958
+}

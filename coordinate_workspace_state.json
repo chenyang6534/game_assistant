@@ -1,0 +1,2016 @@
+{
+    "version": 1,
+    "states": [
+        {
+            "state_id": "50e62b19ee374aef8715fd164822be50",
+            "window_title": "三国志·战略版 电脑模拟器 1358.1777",
+            "window_class_name": "EJOY2DX",
+            "screenshot_path": "coordinate_workspace_assets/50e62b19ee374aef8715fd164822be50.png",
+            "axis_x": null,
+            "axis_y": null,
+            "axis_x_grid_count": 1,
+            "axis_y_grid_count": 1,
+            "manual_cells": [],
+            "anchor_cells": [
+                {
+                    "cell_id": "cell_1",
+                    "center_client": [
+                        514.6395383693045,
+                        288.4404976019184
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "(0, 0)"
+                },
+                {
+                    "cell_id": "cell_2",
+                    "center_client": [
+                        586.2415442645884,
+                        244.85026978417267
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "(0, -1)"
+                },
+                {
+                    "cell_id": "cell_3",
+                    "center_client": [
+                        626.6731406541434,
+                        311.10528244071406
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "(1, 0)"
+                },
+                {
+                    "cell_id": "point_1",
+                    "center_client": [
+                        555.9780604719765,
+                        357.6050884955753
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_1"
+                },
+                {
+                    "cell_id": "point_2",
+                    "center_client": [
+                        442.1137536873157,
+                        334.47640117994104
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_2"
+                },
+                {
+                    "cell_id": "point_3",
+                    "center_client": [
+                        406.5311578171092,
+                        266.8694690265487
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_3"
+                },
+                {
+                    "cell_id": "point_4",
+                    "center_client": [
+                        476.80678466076705,
+                        222.3912241887906
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_4"
+                },
+                {
+                    "cell_id": "point_5",
+                    "center_client": [
+                        654.7197640117995,
+                        202.820796460177
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_5"
+                },
+                {
+                    "cell_id": "point_6",
+                    "center_client": [
+                        717.8788716814161,
+                        162.7903761061947
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_6"
+                },
+                {
+                    "cell_id": "point_7",
+                    "center_client": [
+                        780.1484144542774,
+                        127.20778023598821
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -4.0
+                    ],
+                    "polygon": [],
+                    "label": "point_7"
+                },
+                {
+                    "cell_id": "point_8",
+                    "center_client": [
+                        360.2737831858407,
+                        381.62334070796464
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_8"
+                },
+                {
+                    "cell_id": "point_9",
+                    "center_client": [
+                        276.6546828908555,
+                        437.66592920353986
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_9"
+                },
+                {
+                    "cell_id": "point_10",
+                    "center_client": [
+                        185.02949852507376,
+                        491.0398230088496
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        4.0
+                    ],
+                    "polygon": [],
+                    "label": "point_10"
+                },
+                {
+                    "cell_id": "point_11",
+                    "center_client": [
+                        330.9181415929204,
+                        309.5685840707965
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_11"
+                },
+                {
+                    "cell_id": "point_12",
+                    "center_client": [
+                        248.1886061946903,
+                        358.4946533923304
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_12"
+                },
+                {
+                    "cell_id": "point_13",
+                    "center_client": [
+                        161.0112463126844,
+                        410.08941740412985
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_13"
+                },
+                {
+                    "cell_id": "point_14",
+                    "center_client": [
+                        549.7511061946904,
+                        182.36080383480828
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_14"
+                },
+                {
+                    "cell_id": "point_15",
+                    "center_client": [
+                        615.5789085545723,
+                        142.330383480826
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_15"
+                },
+                {
+                    "cell_id": "point_16",
+                    "center_client": [
+                        676.9588864306786,
+                        106.74778761061948
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -4.0
+                    ],
+                    "polygon": [],
+                    "label": "point_16"
+                },
+                {
+                    "cell_id": "point_17",
+                    "center_client": [
+                        476.80678466076705,
+                        407.42072271386434
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_17"
+                },
+                {
+                    "cell_id": "point_18",
+                    "center_client": [
+                        393.18768436578176,
+                        463.4633112094396
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_18"
+                },
+                {
+                    "cell_id": "point_19",
+                    "center_client": [
+                        695.639749262537,
+                        263.31120943952806
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_19"
+                },
+                {
+                    "cell_id": "point_20",
+                    "center_client": [
+                        760.5779867256638,
+                        222.3912241887906
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        -3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_20"
+                },
+                {
+                    "cell_id": "point_21",
+                    "center_client": [
+                        448.34070796460185,
+                        162.7903761061947
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_21"
+                },
+                {
+                    "cell_id": "point_22",
+                    "center_client": [
+                        376.2859513274337,
+                        201.04166666666669
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_22"
+                },
+                {
+                    "cell_id": "point_23",
+                    "center_client": [
+                        516.8372050147493,
+                        123.64952064896757
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_23"
+                },
+                {
+                    "cell_id": "point_24",
+                    "center_client": [
+                        299.78337020648974,
+                        244.63034660766965
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_24"
+                },
+                {
+                    "cell_id": "point_25",
+                    "center_client": [
+                        218.83296460176993,
+                        288.2190265486726
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_25"
+                },
+                {
+                    "cell_id": "point_26",
+                    "center_client": [
+                        138.77212389380531,
+                        332.6972713864307
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_26"
+                },
+                {
+                    "cell_id": "point_27",
+                    "center_client": [
+                        668.9528023598821,
+                        383.40247050147497
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_27"
+                },
+                {
+                    "cell_id": "point_28",
+                    "center_client": [
+                        739.2284292035399,
+                        334.47640117994104
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_28"
+                },
+                {
+                    "cell_id": "point_29",
+                    "center_client": [
+                        805.9457964601771,
+                        286.4398967551623
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_29"
+                },
+                {
+                    "cell_id": "point_30",
+                    "center_client": [
+                        594.2293510324484,
+                        435.88679941002954
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_30"
+                },
+                {
+                    "cell_id": "point_31",
+                    "center_client": [
+                        719.6580014749263,
+                        462.5737463126844
+                    ],
+                    "logical_coord": [
+                        3.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_31"
+                },
+                {
+                    "cell_id": "point_32",
+                    "center_client": [
+                        792.6023230088497,
+                        409.19985250737466
+                    ],
+                    "logical_coord": [
+                        3.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_32"
+                },
+                {
+                    "cell_id": "point_33",
+                    "center_client": [
+                        860.209255162242,
+                        359.3842182890856
+                    ],
+                    "logical_coord": [
+                        3.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_33"
+                },
+                {
+                    "cell_id": "point_34",
+                    "center_client": [
+                        275.7651179941003,
+                        182.36080383480828
+                    ],
+                    "logical_coord": [
+                        -3.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_34"
+                },
+                {
+                    "cell_id": "point_35",
+                    "center_client": [
+                        200.15210176991152,
+                        222.3912241887906
+                    ],
+                    "logical_coord": [
+                        -3.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_35"
+                },
+                {
+                    "cell_id": "point_36",
+                    "center_client": [
+                        118.31213126843659,
+                        265.0903392330384
+                    ],
+                    "logical_coord": [
+                        -3.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_36"
+                },
+                {
+                    "cell_id": "point_37",
+                    "center_client": [
+                        176.13384955752215,
+                        162.7903761061947
+                    ],
+                    "logical_coord": [
+                        -4.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_37"
+                },
+                {
+                    "cell_id": "point_38",
+                    "center_client": [
+                        101.4103982300885,
+                        201.93123156342185
+                    ],
+                    "logical_coord": [
+                        -4.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_38"
+                },
+                {
+                    "cell_id": "point_39",
+                    "center_client": [
+                        82.7295353982301,
+                        144.99907817109147
+                    ],
+                    "logical_coord": [
+                        -5.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_39"
+                },
+                {
+                    "cell_id": "point_40",
+                    "center_client": [
+                        913.5831489675518,
+                        433.2181047197641
+                    ],
+                    "logical_coord": [
+                        4.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_40"
+                },
+                {
+                    "cell_id": "point_41",
+                    "center_client": [
+                        844.1970870206491,
+                        490.15025811209443
+                    ],
+                    "logical_coord": [
+                        4.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_41"
+                },
+                {
+                    "cell_id": "point_42",
+                    "center_client": [
+                        981.1900811209441,
+                        385.1816002949853
+                    ],
+                    "logical_coord": [
+                        4.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_42"
+                }
+            ],
+            "guide_lines": [
+                {
+                    "line_id": "line_1",
+                    "start_client": [
+                        40.108870967741936,
+                        431.51612903225805
+                    ],
+                    "end_client": [
+                        669.4032258064516,
+                        73.30241935483872
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_2",
+                    "start_client": [
+                        116.17741935483872,
+                        486.8387096774194
+                    ],
+                    "end_client": [
+                        778.6653225806452,
+                        84.36693548387098
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_3",
+                    "start_client": [
+                        18.454183266932272,
+                        358.3187250996016
+                    ],
+                    "end_client": [
+                        540.7782258064516,
+                        73.30241935483872
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_4",
+                    "start_client": [
+                        8.458167330677291,
+                        285.27091633466136
+                    ],
+                    "end_client": [
+                        312.5725806451613,
+                        128.625
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_5",
+                    "start_client": [
+                        5.532258064516129,
+                        214.375
+                    ],
+                    "end_client": [
+                        182.56451612903226,
+                        128.625
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_6",
+                    "start_client": [
+                        9.681451612903226,
+                        145.22177419354838
+                    ],
+                    "end_client": [
+                        89.8991935483871,
+                        109.26209677419355
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_7",
+                    "start_client": [
+                        66.38709677419355,
+                        334.7016129032258
+                    ],
+                    "end_client": [
+                        125.33466135458168,
+                        382.1553784860558
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_8",
+                    "start_client": [
+                        29.04435483870968,
+                        201.92741935483872
+                    ],
+                    "end_client": [
+                        84.58167330677291,
+                        241.4422310756972
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_9",
+                    "start_client": [
+                        12.44758064516129,
+                        146.60483870967744
+                    ],
+                    "end_client": [
+                        66.89641434262948,
+                        180.69721115537848
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_10",
+                    "start_client": [
+                        172.88306451612902,
+                        549.0766129032259
+                    ],
+                    "end_client": [
+                        816.008064516129,
+                        143.83870967741936
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_11",
+                    "start_client": [
+                        395.22709163346616,
+                        517.4860557768925
+                    ],
+                    "end_client": [
+                        828.4556451612904,
+                        221.29032258064518
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_12",
+                    "start_client": [
+                        583.6532258064516,
+                        502.0524193548387
+                    ],
+                    "end_client": [
+                        896.2258064516129,
+                        276.61290322580646
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_13",
+                    "start_client": [
+                        746.6254980079682,
+                        500.56972111553785
+                    ],
+                    "end_client": [
+                        1023.4677419354839,
+                        293.2096774193549
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_14",
+                    "start_client": [
+                        814.2908366533865,
+                        578.2310756972112
+                    ],
+                    "end_client": [
+                        1023.4677419354839,
+                        408.0040322580645
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_15",
+                    "start_client": [
+                        46.90438247011952,
+                        266.04780876494027
+                    ],
+                    "end_client": [
+                        103.80478087649402,
+                        308.3386454183267
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_16",
+                    "start_client": [
+                        129.1792828685259,
+                        223.75697211155378
+                    ],
+                    "end_client": [
+                        186.0796812749004,
+                        265.2788844621514
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_17",
+                    "start_client": [
+                        209.14741035856574,
+                        183.00398406374504
+                    ],
+                    "end_client": [
+                        266.04780876494027,
+                        222.2191235059761
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_18",
+                    "start_client": [
+                        281.42629482071715,
+                        144.5577689243028
+                    ],
+                    "end_client": [
+                        339.8645418326693,
+                        183.77290836653387
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_19",
+                    "start_client": [
+                        93.0398406374502,
+                        109.18725099601593
+                    ],
+                    "end_client": [
+                        69.20318725099602,
+                        181.46613545816734
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_20",
+                    "start_client": [
+                        13.071713147410359,
+                        144.5577689243028
+                    ],
+                    "end_client": [
+                        149.9402390438247,
+                        144.5577689243028
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_21",
+                    "start_client": [
+                        33.832669322709165,
+                        202.22709163346613
+                    ],
+                    "end_client": [
+                        165.3187250996016,
+                        201.4581673306773
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_22",
+                    "start_client": [
+                        129.94820717131475,
+                        224.52589641434264
+                    ],
+                    "end_client": [
+                        268.35458167330677,
+                        221.45019920318725
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_23",
+                    "start_client": [
+                        257.9738200589971,
+                        309.5685840707965
+                    ],
+                    "end_client": [
+                        398.5250737463127,
+                        310.45814896755167
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_24",
+                    "start_client": [
+                        231.2868731563422,
+                        245.5199115044248
+                    ],
+                    "end_client": [
+                        366.5007374631269,
+                        242.85121681415933
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_25",
+                    "start_client": [
+                        307.78945427728615,
+                        201.93123156342185
+                    ],
+                    "end_client": [
+                        444.7824483775812,
+                        200.15210176991152
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_26",
+                    "start_client": [
+                        173.46515486725667,
+                        358.4946533923304
+                    ],
+                    "end_client": [
+                        327.35988200589975,
+                        358.4946533923304
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_27",
+                    "start_client": [
+                        84.50866519174042,
+                        409.19985250737466
+                    ],
+                    "end_client": [
+                        240.18252212389385,
+                        410.08941740412985
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_28",
+                    "start_client": [
+                        200.15210176991152,
+                        440.3346238938054
+                    ],
+                    "end_client": [
+                        354.93639380530976,
+                        433.2181047197641
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_29",
+                    "start_client": [
+                        314.0164085545723,
+                        463.4633112094396
+                    ],
+                    "end_client": [
+                        475.91721976401186,
+                        461.6841814159293
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_30",
+                    "start_client": [
+                        400.30420353982305,
+                        407.42072271386434
+                    ],
+                    "end_client": [
+                        554.1989306784661,
+                        407.42072271386434
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_31",
+                    "start_client": [
+                        285.5503318584071,
+                        383.40247050147497
+                    ],
+                    "end_client": [
+                        435.88679941002954,
+                        381.62334070796464
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_32",
+                    "start_client": [
+                        367.39030235988207,
+                        335.3659660766962
+                    ],
+                    "end_client": [
+                        514.1685103244838,
+                        333.5868362831859
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_33",
+                    "start_client": [
+                        334.47640117994104,
+                        265.0903392330384
+                    ],
+                    "end_client": [
+                        475.91721976401186,
+                        266.8694690265487
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_34",
+                    "start_client": [
+                        409.19985250737466,
+                        223.28078908554576
+                    ],
+                    "end_client": [
+                        549.7511061946904,
+                        222.3912241887906
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_35",
+                    "start_client": [
+                        481.2546091445428,
+                        182.36080383480828
+                    ],
+                    "end_client": [
+                        615.5789085545723,
+                        180.58167404129796
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_36",
+                    "start_client": [
+                        549.7511061946904,
+                        142.330383480826
+                    ],
+                    "end_client": [
+                        681.4067109144544,
+                        143.21994837758115
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_37",
+                    "start_client": [
+                        612.9102138643069,
+                        106.74778761061948
+                    ],
+                    "end_client": [
+                        738.3388643067848,
+                        105.85822271386432
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_38",
+                    "start_client": [
+                        652.051069321534,
+                        163.67994100294987
+                    ],
+                    "end_client": [
+                        783.706674041298,
+                        163.67994100294987
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_39",
+                    "start_client": [
+                        284.660766961652,
+                        143.21994837758115
+                    ],
+                    "end_client": [
+                        413.6476769911505,
+                        142.330383480826
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_40",
+                    "start_client": [
+                        381.62334070796464,
+                        162.7903761061947
+                    ],
+                    "end_client": [
+                        513.2789454277287,
+                        161.0112463126844
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_41",
+                    "start_client": [
+                        451.0094026548673,
+                        124.53908554572273
+                    ],
+                    "end_client": [
+                        575.5484882005901,
+                        124.53908554572273
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_42",
+                    "start_client": [
+                        517.7267699115044,
+                        87.17735988200592
+                    ],
+                    "end_client": [
+                        637.8180309734514,
+                        89.8460545722714
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_43",
+                    "start_client": [
+                        479.4754793510325,
+                        358.4946533923304
+                    ],
+                    "end_client": [
+                        626.2536873156344,
+                        356.7155235988201
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_44",
+                    "start_client": [
+                        553.309365781711,
+                        310.45814896755167
+                    ],
+                    "end_client": [
+                        699.1980088495576,
+                        308.67901917404134
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_45",
+                    "start_client": [
+                        622.6954277286136,
+                        264.20077433628325
+                    ],
+                    "end_client": [
+                        765.9153761061948,
+                        262.42164454277287
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_46",
+                    "start_client": [
+                        693.8606194690267,
+                        223.28078908554576
+                    ],
+                    "end_client": [
+                        826.4057890855458,
+                        221.5016592920354
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_47",
+                    "start_client": [
+                        737.4492994100295,
+                        286.4398967551623
+                    ],
+                    "end_client": [
+                        880.6692477876107,
+                        286.4398967551623
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_48",
+                    "start_client": [
+                        663.6154129793512,
+                        335.3659660766962
+                    ],
+                    "end_client": [
+                        814.8414454277287,
+                        333.5868362831859
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_49",
+                    "start_client": [
+                        595.1189159292036,
+                        382.51290560471983
+                    ],
+                    "end_client": [
+                        743.6762536873157,
+                        383.40247050147497
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_50",
+                    "start_client": [
+                        515.9476401179942,
+                        434.9972345132744
+                    ],
+                    "end_client": [
+                        672.5110619469027,
+                        436.7763643067847
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_51",
+                    "start_client": [
+                        639.5971607669617,
+                        463.4633112094396
+                    ],
+                    "end_client": [
+                        797.9397123893806,
+                        460.7946165191741
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_52",
+                    "start_client": [
+                        715.2101769911505,
+                        409.19985250737466
+                    ],
+                    "end_client": [
+                        868.2153392330384,
+                        410.08941740412985
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_53",
+                    "start_client": [
+                        783.706674041298,
+                        356.7155235988201
+                    ],
+                    "end_client": [
+                        935.8222713864308,
+                        360.2737831858407
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_54",
+                    "start_client": [
+                        849.5344764011801,
+                        312.237278761062
+                    ],
+                    "end_client": [
+                        997.202249262537,
+                        311.3477138643068
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_55",
+                    "start_client": [
+                        909.1353244837759,
+                        385.1816002949853
+                    ],
+                    "end_client": [
+                        1024.778761061947,
+                        386.0711651917405
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_56",
+                    "start_client": [
+                        837.9701327433629,
+                        434.9972345132744
+                    ],
+                    "end_client": [
+                        990.9752949852509,
+                        432.3285398230089
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_57",
+                    "start_client": [
+                        762.3571165191742,
+                        490.15025811209443
+                    ],
+                    "end_client": [
+                        923.3683628318586,
+                        489.2606932153393
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_58",
+                    "start_client": [
+                        66.71736725663717,
+                        334.47640117994104
+                    ],
+                    "end_client": [
+                        209.93731563421832,
+                        331.8077064896756
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_59",
+                    "start_client": [
+                        47.1469395280236,
+                        266.8694690265487
+                    ],
+                    "end_client": [
+                        185.02949852507376,
+                        265.0903392330384
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_60",
+                    "start_client": [
+                        111.1956120943953,
+                        165.4590707964602
+                    ],
+                    "end_client": [
+                        241.072087020649,
+                        162.7903761061947
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_61",
+                    "start_client": [
+                        112.08517699115046,
+                        166.34863569321536
+                    ],
+                    "end_client": [
+                        88.06692477876108,
+                        242.85121681415933
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_62",
+                    "start_client": [
+                        129.8764749262537,
+                        224.17035398230092
+                    ],
+                    "end_client": [
+                        106.74778761061948,
+                        308.67901917404134
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_63",
+                    "start_client": [
+                        208.158185840708,
+                        183.25036873156344
+                    ],
+                    "end_client": [
+                        188.5877581120944,
+                        264.20077433628325
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_64",
+                    "start_client": [
+                        282.88163716814165,
+                        146.7782079646018
+                    ],
+                    "end_client": [
+                        266.8694690265487,
+                        220.61209439528025
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_65",
+                    "start_client": [
+                        150.33646755162243,
+                        289.10859144542775
+                    ],
+                    "end_client": [
+                        126.31821533923305,
+                        383.40247050147497
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_66",
+                    "start_client": [
+                        226.8390486725664,
+                        246.40947640117997
+                    ],
+                    "end_client": [
+                        211.71644542772864,
+                        333.5868362831859
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_67",
+                    "start_client": [
+                        306.01032448377583,
+                        201.93123156342185
+                    ],
+                    "end_client": [
+                        293.5564159292036,
+                        287.3294616519174
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_68",
+                    "start_client": [
+                        378.9546460176992,
+                        162.7903761061947
+                    ],
+                    "end_client": [
+                        372.72769174041304,
+                        241.96165191740417
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_69",
+                    "start_client": [
+                        450.11983775811217,
+                        125.42865044247789
+                    ],
+                    "end_client": [
+                        445.67201327433634,
+                        201.93123156342185
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_70",
+                    "start_client": [
+                        515.9476401179942,
+                        89.8460545722714
+                    ],
+                    "end_client": [
+                        515.058075221239,
+                        159.23211651917407
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_71",
+                    "start_client": [
+                        672.5110619469027,
+                        73.83388643067848
+                    ],
+                    "end_client": [
+                        681.4067109144544,
+                        143.21994837758115
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_72",
+                    "start_client": [
+                        612.0206489675517,
+                        106.74778761061948
+                    ],
+                    "end_client": [
+                        618.2476032448378,
+                        182.36080383480828
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_73",
+                    "start_client": [
+                        549.7511061946904,
+                        141.44081858407083
+                    ],
+                    "end_client": [
+                        550.6406710914455,
+                        222.3912241887906
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_74",
+                    "start_client": [
+                        477.6963495575222,
+                        180.58167404129796
+                    ],
+                    "end_client": [
+                        476.80678466076705,
+                        265.97990412979357
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_75",
+                    "start_client": [
+                        409.19985250737466,
+                        221.5016592920354
+                    ],
+                    "end_client": [
+                        404.7520280235989,
+                        309.5685840707965
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_76",
+                    "start_client": [
+                        335.3659660766962,
+                        265.0903392330384
+                    ],
+                    "end_client": [
+                        327.35988200589975,
+                        358.4946533923304
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_77",
+                    "start_client": [
+                        256.19469026548677,
+                        310.45814896755167
+                    ],
+                    "end_client": [
+                        241.072087020649,
+                        409.19985250737466
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_78",
+                    "start_client": [
+                        171.68602507374632,
+                        358.4946533923304
+                    ],
+                    "end_client": [
+                        150.33646755162243,
+                        462.5737463126844
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_79",
+                    "start_client": [
+                        198.3729719764012,
+                        439.4450589970502
+                    ],
+                    "end_client": [
+                        174.35471976401183,
+                        544.4137168141593
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_80",
+                    "start_client": [
+                        107.63735250737464,
+                        492.81895280235995
+                    ],
+                    "end_client": [
+                        265.0903392330384,
+                        488.3711283185841
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_81",
+                    "start_client": [
+                        397.6355088495576,
+                        407.42072271386434
+                    ],
+                    "end_client": [
+                        389.6294247787611,
+                        515.058075221239
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_82",
+                    "start_client": [
+                        477.6963495575222,
+                        359.3842182890856
+                    ],
+                    "end_client": [
+                        474.13808997050154,
+                        463.4633112094396
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_83",
+                    "start_client": [
+                        555.0884955752213,
+                        311.3477138643068
+                    ],
+                    "end_client": [
+                        555.9780604719765,
+                        406.5311578171092
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_84",
+                    "start_client": [
+                        622.6954277286136,
+                        265.97990412979357
+                    ],
+                    "end_client": [
+                        629.811946902655,
+                        359.3842182890856
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_85",
+                    "start_client": [
+                        692.0814896755163,
+                        225.05991887905608
+                    ],
+                    "end_client": [
+                        700.0875737463127,
+                        307.78945427728615
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_86",
+                    "start_client": [
+                        756.130162241888,
+                        183.25036873156344
+                    ],
+                    "end_client": [
+                        766.8049410029499,
+                        262.42164454277287
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_87",
+                    "start_client": [
+                        797.9397123893806,
+                        243.7407817109145
+                    ],
+                    "end_client": [
+                        814.8414454277287,
+                        334.47640117994104
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_88",
+                    "start_client": [
+                        731.2223451327435,
+                        289.10859144542775
+                    ],
+                    "end_client": [
+                        747.2345132743363,
+                        383.40247050147497
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_89",
+                    "start_client": [
+                        663.6154129793512,
+                        335.3659660766962
+                    ],
+                    "end_client": [
+                        675.1797566371682,
+                        434.9972345132744
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_90",
+                    "start_client": [
+                        593.3397861356933,
+                        381.62334070796464
+                    ],
+                    "end_client": [
+                        597.7876106194691,
+                        491.0398230088496
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_91",
+                    "start_client": [
+                        711.6519174041299,
+                        410.08941740412985
+                    ],
+                    "end_client": [
+                        725.8849557522125,
+                        514.1685103244838
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_92",
+                    "start_client": [
+                        783.706674041298,
+                        358.4946533923304
+                    ],
+                    "end_client": [
+                        800.6084070796461,
+                        459.0154867256638
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_93",
+                    "start_client": [
+                        851.3136061946904,
+                        311.3477138643068
+                    ],
+                    "end_client": [
+                        869.1049041297936,
+                        409.19985250737466
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_94",
+                    "start_client": [
+                        904.6875000000001,
+                        386.9607300884956
+                    ],
+                    "end_client": [
+                        925.1474926253688,
+                        489.2606932153393
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_95",
+                    "start_client": [
+                        834.4118731563423,
+                        434.1076696165192
+                    ],
+                    "end_client": [
+                        852.2031710914455,
+                        546.1928466076697
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_96",
+                    "start_client": [
+                        969.6257374631269,
+                        334.47640117994104
+                    ],
+                    "end_client": [
+                        991.864859882006,
+                        433.2181047197641
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_97",
+                    "start_client": [
+                        443.892883480826,
+                        289.99815634218294
+                    ],
+                    "end_client": [
+                        438.55549410029505,
+                        381.62334070796464
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_98",
+                    "start_client": [
+                        364.72160766961656,
+                        337.14509587020655
+                    ],
+                    "end_client": [
+                        355.82595870206495,
+                        434.1076696165192
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_99",
+                    "start_client": [
+                        286.4398967551623,
+                        385.1816002949853
+                    ],
+                    "end_client": [
+                        267.7590339233039,
+                        487.481563421829
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_100",
+                    "start_client": [
+                        588.0023967551623,
+                        201.93123156342185
+                    ],
+                    "end_client": [
+                        721.4371312684367,
+                        202.820796460177
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_101",
+                    "start_client": [
+                        651.1615044247789,
+                        163.67994100294987
+                    ],
+                    "end_client": [
+                        658.2780235988201,
+                        242.85121681415933
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_102",
+                    "start_client": [
+                        711.6519174041299,
+                        127.20778023598821
+                    ],
+                    "end_client": [
+                        724.1058259587022,
+                        202.820796460177
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_103",
+                    "start_client": [
+                        713.4310471976402,
+                        127.20778023598821
+                    ],
+                    "end_client": [
+                        846.8657817109146,
+                        125.42865044247789
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_104",
+                    "start_client": [
+                        774.8110250737465,
+                        88.06692477876108
+                    ],
+                    "end_client": [
+                        785.4858038348084,
+                        162.7903761061947
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_105",
+                    "start_client": [
+                        184.1399336283186,
+                        128.98691002949855
+                    ],
+                    "end_client": [
+                        166.34863569321536,
+                        201.93123156342185
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_106",
+                    "start_client": [
+                        210.82688053097348,
+                        181.47123893805312
+                    ],
+                    "end_client": [
+                        337.14509587020655,
+                        182.36080383480828
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                },
+                {
+                    "line_id": "line_107",
+                    "start_client": [
+                        153.89472713864308,
+                        289.10859144542775
+                    ],
+                    "end_client": [
+                        291.77728613569326,
+                        287.3294616519174
+                    ],
+                    "style": "default",
+                    "label": "白色实线"
+                }
+            ],
+            "selected_cell_id": "point_42",
+            "selected_line_id": "",
+            "marker_point": [
+                945.4338809999999,
+                394.990326
+            ],
+            "logical_input": [
+                4.0,
+                -2.0
+            ],
+            "screen_input": [
+                0.918789,
+                0.682194
+            ],
+            "clicked_result": "截图坐标: (981, 385)\n相对坐标: (0.953353, 0.664940)\n当前窗口像素坐标: (1008, 574)\n逻辑坐标: (4, -2)",
+            "fit_view": false,
+            "zoom": 1.124145077720207,
+            "active_profile_id": "",
+            "created_at": 1773366962.151846,
+            "updated_at": 1773374018.9826088
+        }
+    ]
+}

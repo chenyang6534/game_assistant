@@ -1,0 +1,19 @@
+{
+  "target": {
+    "level": "lv05",
+    "resource_type": "wood",
+    "relation": "neutral"
+  },
+  "target_label": "lv05_wood_neutral",
+  "output_root": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\datasets\\smoke_tests\\lv05_wood_neutral",
+  "json_file_count": 60,
+  "image_count": 60,
+  "positive_images": 35,
+  "negative_images": 25,
+  "target_boxes": 52,
+  "ignore_attrs": true,
+  "matched_by_attrs": 0,
+  "matched_by_ignore_attrs": 52,
+  "warning_count": 0,
+  "warnings": []
+}

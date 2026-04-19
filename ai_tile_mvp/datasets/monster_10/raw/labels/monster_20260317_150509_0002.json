@@ -1,0 +1,68 @@
+{
+  "version": "4.0.0-beta.2",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "resource_node",
+      "score": null,
+      "points": [
+        [
+          520.9814814814814,
+          188.79629629629633
+        ],
+        [
+          699.9938271604938,
+          188.79629629629633
+        ],
+        [
+          699.9938271604938,
+          301.14197530864203
+        ],
+        [
+          520.9814814814814,
+          301.14197530864203
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {},
+      "kie_linking": []
+    },
+    {
+      "label": "resource_node",
+      "score": null,
+      "points": [
+        [
+          608.6358024691358,
+          146.820987654321
+        ],
+        [
+          787.648148148148,
+          146.820987654321
+        ],
+        [
+          787.648148148148,
+          259.16666666666663
+        ],
+        [
+          608.6358024691358,
+          259.16666666666663
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {},
+      "kie_linking": []
+    }
+  ],
+  "imagePath": "..\\images\\monster_20260317_150509_0002.png",
+  "imageData": null,
+  "imageHeight": 485,
+  "imageWidth": 1079
+}

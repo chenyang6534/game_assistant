@@ -1,0 +1,50 @@
+{
+    "version": "1.0.0",
+    "hotkeys": {
+        "start_stop": "f9",
+        "pause": "f10",
+        "emergency_stop": "f12"
+    },
+    "window": {
+        "width": 900,
+        "height": 700,
+        "remember_position": true,
+        "start_minimized": false
+    },
+    "capture": {
+        "fps_limit": 30,
+        "default_region": null
+    },
+    "recognition": {
+        "default_threshold": 0.8,
+        "use_grayscale": true
+    },
+    "input": {
+        "random_delay_min": 50,
+        "random_delay_max": 150,
+        "human_like_movement": true
+    },
+    "recorder": {
+        "save_directory": "scripts",
+        "auto_save": true
+    },
+    "recent_windows": [],
+    "recent_templates": [],
+    "isometric": {
+        "axis_x": [
+            0.856956,
+            0.51539
+        ],
+        "axis_y": [
+            -0.852543,
+            0.522657
+        ]
+    },
+    "coordinate_mapping": {
+        "file": "coordinate_mappings.json",
+        "active_profile_id": "4582fd2b5b4641d9b6dc14835098a9e4",
+        "active_window_title": "三国志·战略版 电脑模拟器 1358.1777",
+        "active_window_class": "EJOY2DX",
+        "updated_at": 1773373904.9004908
+    }
+}

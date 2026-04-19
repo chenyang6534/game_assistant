@@ -1,0 +1,636 @@
+{
+    "version": 1,
+    "profiles": [
+        {
+            "profile_id": "4582fd2b5b4641d9b6dc14835098a9e4",
+            "name": "三国志·战略版 电脑模拟器 1358.1777",
+            "window_title": "三国志·战略版 电脑模拟器 1358.1777",
+            "window_class_name": "EJOY2DX",
+            "client_size": [
+                1029,
+                579
+            ],
+            "origin_client": [
+                502.1700074906239,
+                304.42805297112074
+            ],
+            "origin_logical": [
+                0.0,
+                0.0
+            ],
+            "axis_x": {
+                "start": [
+                    502.1700074906239,
+                    304.42805297112074
+                ],
+                "end": [
+                    576.7512330405627,
+                    349.2826110719478
+                ],
+                "grid_count": 1.0
+            },
+            "axis_y": {
+                "start": [
+                    502.1700074906239,
+                    304.42805297112074
+                ],
+                "end": [
+                    429.70049004579806,
+                    348.8559259872686
+                ],
+                "grid_count": 1.0
+            },
+            "created_at": 1773314889.239569,
+            "updated_at": 1773373904.9004908,
+            "source": "anchors",
+            "fit_error_px": 27.13358761986907,
+            "anchor_cells": [
+                {
+                    "cell_id": "cell_1",
+                    "center_client": [
+                        514.6395383693045,
+                        288.4404976019184
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "(0, 0)"
+                },
+                {
+                    "cell_id": "cell_2",
+                    "center_client": [
+                        586.2415442645884,
+                        244.85026978417267
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "(0, -1)"
+                },
+                {
+                    "cell_id": "cell_3",
+                    "center_client": [
+                        626.6731406541434,
+                        311.10528244071406
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "(1, 0)"
+                },
+                {
+                    "cell_id": "point_1",
+                    "center_client": [
+                        555.9780604719765,
+                        357.6050884955753
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_1"
+                },
+                {
+                    "cell_id": "point_2",
+                    "center_client": [
+                        442.1137536873157,
+                        334.47640117994104
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_2"
+                },
+                {
+                    "cell_id": "point_3",
+                    "center_client": [
+                        406.5311578171092,
+                        266.8694690265487
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_3"
+                },
+                {
+                    "cell_id": "point_4",
+                    "center_client": [
+                        476.80678466076705,
+                        222.3912241887906
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_4"
+                },
+                {
+                    "cell_id": "point_5",
+                    "center_client": [
+                        654.7197640117995,
+                        202.820796460177
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_5"
+                },
+                {
+                    "cell_id": "point_6",
+                    "center_client": [
+                        717.8788716814161,
+                        162.7903761061947
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_6"
+                },
+                {
+                    "cell_id": "point_7",
+                    "center_client": [
+                        780.1484144542774,
+                        127.20778023598821
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        -4.0
+                    ],
+                    "polygon": [],
+                    "label": "point_7"
+                },
+                {
+                    "cell_id": "point_8",
+                    "center_client": [
+                        360.2737831858407,
+                        381.62334070796464
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_8"
+                },
+                {
+                    "cell_id": "point_9",
+                    "center_client": [
+                        276.6546828908555,
+                        437.66592920353986
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_9"
+                },
+                {
+                    "cell_id": "point_10",
+                    "center_client": [
+                        185.02949852507376,
+                        491.0398230088496
+                    ],
+                    "logical_coord": [
+                        0.0,
+                        4.0
+                    ],
+                    "polygon": [],
+                    "label": "point_10"
+                },
+                {
+                    "cell_id": "point_11",
+                    "center_client": [
+                        330.9181415929204,
+                        309.5685840707965
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_11"
+                },
+                {
+                    "cell_id": "point_12",
+                    "center_client": [
+                        248.1886061946903,
+                        358.4946533923304
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_12"
+                },
+                {
+                    "cell_id": "point_13",
+                    "center_client": [
+                        161.0112463126844,
+                        410.08941740412985
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_13"
+                },
+                {
+                    "cell_id": "point_14",
+                    "center_client": [
+                        549.7511061946904,
+                        182.36080383480828
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_14"
+                },
+                {
+                    "cell_id": "point_15",
+                    "center_client": [
+                        615.5789085545723,
+                        142.330383480826
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_15"
+                },
+                {
+                    "cell_id": "point_16",
+                    "center_client": [
+                        676.9588864306786,
+                        106.74778761061948
+                    ],
+                    "logical_coord": [
+                        -1.0,
+                        -4.0
+                    ],
+                    "polygon": [],
+                    "label": "point_16"
+                },
+                {
+                    "cell_id": "point_17",
+                    "center_client": [
+                        476.80678466076705,
+                        407.42072271386434
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_17"
+                },
+                {
+                    "cell_id": "point_18",
+                    "center_client": [
+                        393.18768436578176,
+                        463.4633112094396
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_18"
+                },
+                {
+                    "cell_id": "point_19",
+                    "center_client": [
+                        695.639749262537,
+                        263.31120943952806
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_19"
+                },
+                {
+                    "cell_id": "point_20",
+                    "center_client": [
+                        760.5779867256638,
+                        222.3912241887906
+                    ],
+                    "logical_coord": [
+                        1.0,
+                        -3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_20"
+                },
+                {
+                    "cell_id": "point_21",
+                    "center_client": [
+                        448.34070796460185,
+                        162.7903761061947
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_21"
+                },
+                {
+                    "cell_id": "point_22",
+                    "center_client": [
+                        376.2859513274337,
+                        201.04166666666669
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_22"
+                },
+                {
+                    "cell_id": "point_23",
+                    "center_client": [
+                        516.8372050147493,
+                        123.64952064896757
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_23"
+                },
+                {
+                    "cell_id": "point_24",
+                    "center_client": [
+                        299.78337020648974,
+                        244.63034660766965
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_24"
+                },
+                {
+                    "cell_id": "point_25",
+                    "center_client": [
+                        218.83296460176993,
+                        288.2190265486726
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_25"
+                },
+                {
+                    "cell_id": "point_26",
+                    "center_client": [
+                        138.77212389380531,
+                        332.6972713864307
+                    ],
+                    "logical_coord": [
+                        -2.0,
+                        3.0
+                    ],
+                    "polygon": [],
+                    "label": "point_26"
+                },
+                {
+                    "cell_id": "point_27",
+                    "center_client": [
+                        668.9528023598821,
+                        383.40247050147497
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_27"
+                },
+                {
+                    "cell_id": "point_28",
+                    "center_client": [
+                        739.2284292035399,
+                        334.47640117994104
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_28"
+                },
+                {
+                    "cell_id": "point_29",
+                    "center_client": [
+                        805.9457964601771,
+                        286.4398967551623
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_29"
+                },
+                {
+                    "cell_id": "point_30",
+                    "center_client": [
+                        594.2293510324484,
+                        435.88679941002954
+                    ],
+                    "logical_coord": [
+                        2.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_30"
+                },
+                {
+                    "cell_id": "point_31",
+                    "center_client": [
+                        719.6580014749263,
+                        462.5737463126844
+                    ],
+                    "logical_coord": [
+                        3.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_31"
+                },
+                {
+                    "cell_id": "point_32",
+                    "center_client": [
+                        792.6023230088497,
+                        409.19985250737466
+                    ],
+                    "logical_coord": [
+                        3.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_32"
+                },
+                {
+                    "cell_id": "point_33",
+                    "center_client": [
+                        860.209255162242,
+                        359.3842182890856
+                    ],
+                    "logical_coord": [
+                        3.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_33"
+                },
+                {
+                    "cell_id": "point_34",
+                    "center_client": [
+                        275.7651179941003,
+                        182.36080383480828
+                    ],
+                    "logical_coord": [
+                        -3.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_34"
+                },
+                {
+                    "cell_id": "point_35",
+                    "center_client": [
+                        200.15210176991152,
+                        222.3912241887906
+                    ],
+                    "logical_coord": [
+                        -3.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_35"
+                },
+                {
+                    "cell_id": "point_36",
+                    "center_client": [
+                        118.31213126843659,
+                        265.0903392330384
+                    ],
+                    "logical_coord": [
+                        -3.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_36"
+                },
+                {
+                    "cell_id": "point_37",
+                    "center_client": [
+                        176.13384955752215,
+                        162.7903761061947
+                    ],
+                    "logical_coord": [
+                        -4.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_37"
+                },
+                {
+                    "cell_id": "point_38",
+                    "center_client": [
+                        101.4103982300885,
+                        201.93123156342185
+                    ],
+                    "logical_coord": [
+                        -4.0,
+                        2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_38"
+                },
+                {
+                    "cell_id": "point_39",
+                    "center_client": [
+                        82.7295353982301,
+                        144.99907817109147
+                    ],
+                    "logical_coord": [
+                        -5.0,
+                        1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_39"
+                },
+                {
+                    "cell_id": "point_40",
+                    "center_client": [
+                        913.5831489675518,
+                        433.2181047197641
+                    ],
+                    "logical_coord": [
+                        4.0,
+                        -1.0
+                    ],
+                    "polygon": [],
+                    "label": "point_40"
+                },
+                {
+                    "cell_id": "point_41",
+                    "center_client": [
+                        844.1970870206491,
+                        490.15025811209443
+                    ],
+                    "logical_coord": [
+                        4.0,
+                        0.0
+                    ],
+                    "polygon": [],
+                    "label": "point_41"
+                },
+                {
+                    "cell_id": "point_42",
+                    "center_client": [
+                        981.1900811209441,
+                        385.1816002949853
+                    ],
+                    "logical_coord": [
+                        4.0,
+                        -2.0
+                    ],
+                    "polygon": [],
+                    "label": "point_42"
+                }
+            ]
+        }
+    ]
+}

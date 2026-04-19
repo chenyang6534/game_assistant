@@ -1,0 +1,29 @@
+{
+  "所有查看": {
+    "param_type": "coord_array",
+    "value": [
+      [883, 299]
+    ],
+    "array_item_type": "string"
+  },
+  "所有下阵": {
+    "param_type": "coord_array",
+    "value": [
+      [416, 100], [590, 100]
+    ],
+    "array_item_type": "string"
+  },
+  "当前下阵": {
+    "param_type": "coordinate",
+    "value": [
+      590,
+      100
+    ],
+    "array_item_type": "string"
+  },
+  "当前查看": {
+    "param_type": "coord_array",
+    "value": [],
+    "array_item_type": "string"
+  }
+}

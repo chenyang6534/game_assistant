@@ -1,0 +1,19 @@
+{
+  "识别结果逻辑坐标": {
+    "param_type": "coord_array",
+    "value": [
+      [989, 721], [989, 726], [993, 725]
+    ],
+    "array_item_type": "string"
+  },
+  "5级地": {
+    "param_type": "array",
+    "value": [
+      "D:/pytest1/game_assistant/pic/5级粮食.png",
+      "D:/pytest1/game_assistant/pic/5级木材.png",
+      "D:/pytest1/game_assistant/pic/5级石头.png",
+      "D:/pytest1/game_assistant/pic/5级铁矿.png"
+    ],
+    "array_item_type": "image"
+  }
+}

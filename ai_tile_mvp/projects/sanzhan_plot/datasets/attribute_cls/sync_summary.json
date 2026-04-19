@@ -1,0 +1,32 @@
+{
+  "project_name": "sanzhan_plot",
+  "json_files": 25,
+  "detection_boxes": 431,
+  "attribute_samples": {
+    "level": {
+      "lv05": 202,
+      "lv09": 7,
+      "lv07": 23,
+      "lv04": 109,
+      "lv06": 55,
+      "lv08": 24,
+      "lv10": 11
+    },
+    "resource_type": {
+      "wood": 109,
+      "copper": 18,
+      "stone": 81,
+      "food": 109,
+      "iron": 114
+    },
+    "relation": {
+      "self": 33,
+      "ally": 114,
+      "neutral": 241,
+      "enemy": 43
+    }
+  },
+  "manifest": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\datasets\\attribute_cls\\manifest.csv",
+  "warnings": [],
+  "warning_count": 0
+}

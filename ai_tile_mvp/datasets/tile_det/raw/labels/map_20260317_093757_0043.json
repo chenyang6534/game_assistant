@@ -1,0 +1,39 @@
+{
+  "version": "4.0.0-beta.2",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "resource_node",
+      "score": null,
+      "points": [
+        [
+          646.0329670329671,
+          133.00000000000003
+        ],
+        [
+          817.4615384615386,
+          133.00000000000003
+        ],
+        [
+          817.4615384615386,
+          243.989010989011
+        ],
+        [
+          646.0329670329671,
+          243.989010989011
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {},
+      "kie_linking": []
+    }
+  ],
+  "imagePath": "..\\images\\map_20260317_093757_0043.png",
+  "imageData": null,
+  "imageHeight": 566,
+  "imageWidth": 958
+}

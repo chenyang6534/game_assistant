@@ -1,0 +1,73 @@
+{
+  "version": "4.0.0-beta.2",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "resource_node",
+      "score": null,
+      "points": [
+        [
+          545.6728395061727,
+          60.40123456790124
+        ],
+        [
+          699.9938271604938,
+          60.40123456790124
+        ],
+        [
+          699.9938271604938,
+          154.22839506172843
+        ],
+        [
+          545.6728395061727,
+          154.22839506172843
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {
+        "等级": "4级",
+        "类型": "木材",
+        "关系": "同盟"
+      },
+      "kie_linking": []
+    },
+    {
+      "label": "resource_node",
+      "score": null,
+      "points": [
+        [
+          172.83333333333331,
+          172.7469135802469
+        ],
+        [
+          340.7345679012345,
+          172.7469135802469
+        ],
+        [
+          340.7345679012345,
+          275.21604938271605
+        ],
+        [
+          172.83333333333331,
+          275.21604938271605
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {},
+      "kie_linking": []
+    }
+  ],
+  "imagePath": "monster_20260317_150508_0001.png",
+  "imageData": null,
+  "imageHeight": 485,
+  "imageWidth": 1079,
+  "description": ""
+}

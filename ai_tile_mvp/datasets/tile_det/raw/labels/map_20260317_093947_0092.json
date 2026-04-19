@@ -1,0 +1,42 @@
+{
+  "version": "4.0.0-beta.2",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "resource_node",
+      "points": [
+        [
+          558.1208791208792,
+          183.54945054945057
+        ],
+        [
+          725.1538461538462,
+          183.54945054945057
+        ],
+        [
+          725.1538461538462,
+          292.3406593406594
+        ],
+        [
+          558.1208791208792,
+          292.3406593406594
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "difficult": false,
+      "shape_type": "rectangle",
+      "flags": {},
+      "attributes": {
+        "等级": "6级",
+        "类型": "石头",
+        "关系": "同盟"
+      },
+      "kie_linking": []
+    }
+  ],
+  "imagePath": "..\\images\\map_20260317_093947_0092.png",
+  "imageData": null,
+  "imageHeight": 566,
+  "imageWidth": 958
+}

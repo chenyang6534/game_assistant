@@ -1,0 +1,10 @@
+{
+  "image_dir": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\datasets\\detection\\raw\\images",
+  "label_dir": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\datasets\\detection\\raw\\labels",
+  "output_root": "D:\\pytest1\\game_assistant\\ai_tile_mvp\\projects\\sanzhan_plot\\datasets\\detection\\excluded\\unconfirmed_raw",
+  "dry_run": false,
+  "moved_count": 0,
+  "skipped_with_json": 25,
+  "skipped_with_nonempty_txt": 6,
+  "moved_examples": []
+}

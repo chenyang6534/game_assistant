@@ -1,0 +1,5 @@
+ally
+friendly
+neutral
+enemy
+self
